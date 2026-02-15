@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regresa Valeria</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    :root {
+      --bg: #e8ecf0;
+      --text: #3d4852;
+      --accent: #5c6b7a;
+      --accent-light: #9aa8b5;
+      --card: #f5f7f9;
+      --shadow: rgba(61, 72, 82, 0.08);
+    }
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 1.5rem;
+      line-height: 1.5;
+    }
+    .container {
+      max-width: 420px;
+      margin: 0 auto;
+      padding: 2rem 0;
+    }
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 2rem;
+      letter-spacing: -0.02em;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 4px 24px var(--shadow);
+      margin-bottom: 1.5rem;
+    }
+    .step {
+      position: absolute;
+      left: 0;
+      right: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(12px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .step.active {
+      position: relative;
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .question {
+      font-size: 1.125rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.01em;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    label {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      background: var(--bg);
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s ease;
+      border: 2px solid transparent;
+    }
+    label:hover {
+      background: var(--accent-light);
+      transform: translateX(4px);
+    }
+    label:has(input:checked) {
+      background: var(--accent-light);
+      border-color: var(--accent);
+    }
+    label input[type="radio"] {
+      flex-shrink: 0;
+      width: 1.25rem;
+      height: 1.25rem;
+      margin: 0;
+    }
+    label:focus-within {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    input[type="radio"],
+    input[type="range"] {
+      accent-color: var(--accent);
+    }
+    .range-wrap {
+      padding: 1rem 0;
+    }
+    .range-wrap input[type="range"] {
+      width: 100%;
+      height: 10px;
+      margin: 1rem 0;
+      cursor: pointer;
+    }
+    .range-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.875rem;
+      color: #666;
+      margin-top: 0.5rem;
+    }
+    .nav-btns {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+    button {
+      flex: 1;
+      min-width: 120px;
+      padding: 1rem 1.5rem;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 500;
+      border: none;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s ease;
+    }
+    button:hover {
+      opacity: 0.9;
+      transform: scale(1.02);
+    }
+    button:active {
+      transform: scale(0.98);
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+    .btn-secondary {
+      background: var(--bg);
+      color: var(--text);
+      border: 2px solid var(--accent-light);
+    }
+    .progress {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      justify-content: center;
+    }
+    .progress-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .progress-dot.active {
+      background: var(--accent);
+      transform: scale(1.25);
+      box-shadow: 0 0 0 3px rgba(92, 107, 122, 0.2);
+    }
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(45, 42, 38, 0.5);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+    .modal-overlay.active .modal {
+      animation: modalIn 0.3s ease forwards;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal {
+      background: var(--card);
+      border-radius: 1rem;
+      padding: 2rem;
+      max-width: 360px;
+      width: 100%;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      opacity: 0;
+    }
+    .modal h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+    .modal p {
+      font-size: 1rem;
+      color: #6b7280;
+      margin-bottom: 1.5rem;
+    }
+    .modal button {
+      min-width: auto;
+      padding: 0.75rem 2rem;
+    }
+    .mad-display.pulse {
+      animation: valuePulse 0.25s ease;
+    }
+    @keyframes valuePulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 1rem;
+      font-family: inherit;
+      font-size: 1rem;
+      border: 2px solid var(--accent-light);
+      border-radius: 0.75rem;
+      background: var(--bg);
+      color: var(--text);
+      resize: vertical;
+      transition: border-color 0.2s;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    textarea::placeholder {
+      color: #9ca3af;
+    }
+    .optional-label {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-top: -0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .instructions {
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin-bottom: 1.25rem;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Good evening, Valeria</h1>
+
+    <form id="quiz-form" action="https://formspree.io/f/mgolklvj" method="POST" style="display: block;">
+      <input type="hidden" name="mad-level" id="mad-level" value="">
+      <input type="hidden" name="ignoring" id="ignoring" value="">
+      <input type="hidden" name="forgive" id="forgive" value="">
+
+      <div class="card">
+        <div class="progress">
+          <span class="progress-dot active" data-step="0"></span>
+          <span class="progress-dot" data-step="1"></span>
+          <span class="progress-dot" data-step="2"></span>
+          <span class="progress-dot" data-step="3"></span>
+        </div>
+        <div class="steps-wrapper" style="position: relative; min-height: 260px;">
+
+        <!-- Step 1 -->
+        <div class="step active" data-step="0">
+          <p class="question">1. How mad at me are you right now?</p>
+          <p class="instructions">Answer the questions below. Use the Next and Back buttons to move between them. Your answers are private—only I'll see them.</p>
+          <div class="range-wrap">
+            <input type="range" id="mad-slider" min="1" max="9" value="5">
+            <div class="range-labels">
+              <span>1 — barely mad</span>
+              <span>9 — very mad</span>
+            </div>
+            <p style="text-align: center; margin-top: 1rem; font-weight: 500;"><span id="mad-value" class="mad-display">5</span>/9</p>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step" data-step="1">
+          <p class="question">2. Are you ignoring me? Or just need a break?</p>
+          <div class="options">
+            <label>
+              <input type="radio" name="ignoring" value="ignoring you (for now)" required>
+              <span>Ignoring you (for now)</span>
+            </label>
+            <label>
+              <input type="radio" name="ignoring" value="ignoring you (forever)">
+              <span>Ignoring you (forever)</span>
+            </label>
+            <label>
+              <input type="radio" name="ignoring" value="just need a break">
+              <span>I hate you</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step" data-step="2">
+          <p class="question">3. Would you forgive me for not knowing how the fuck to handle my emotions? I have never felt like this in my life so I have no clue how to do it, but I care about you so much I'm willing to learn.</p>
+          <div class="options">
+            <label>
+              <input type="radio" name="forgive" value="yes" required>
+              <span>Yes</span>
+            </label>
+            <label>
+              <input type="radio" name="forgive" value="maybe">
+              <span>No</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Step 4 - Leave a message (optional) -->
+        <div class="step" data-step="3">
+          <p class="question">4. Leave a message</p>
+          <p class="optional-label">Optional — say whatever you want.</p>
+          <textarea id="message-input" name="message" placeholder="Anything you'd like to add..."></textarea>
+        </div>
+        </div>
+
+        <div class="nav-btns">
+          <button type="button" class="btn-secondary" id="btn-prev">Back</button>
+          <button type="button" class="btn-primary" id="btn-next">Next</button>
+          <button type="submit" class="btn-primary" id="btn-submit" style="display: none;">Submit</button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+
+  <div id="modal-overlay" class="modal-overlay">
+    <div class="modal">
+      <h2>Thank you for participating!</h2>
+      <p>Your answers have been received. That's all!</p>
+      <button type="button" class="btn-primary" id="modal-close">OK</button>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('quiz-form');
+    const steps = document.querySelectorAll('.step');
+    const progressDots = document.querySelectorAll('.progress-dot');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+    const btnSubmit = document.getElementById('btn-submit');
+    const madSlider = document.getElementById('mad-slider');
+    const madValue = document.getElementById('mad-value');
+    const madHidden = document.getElementById('mad-level');
+    const modalOverlay = document.getElementById('modal-overlay');
+
+    let currentStep = 0;
+
+    // Slider: 1–9 only (10 is impossible)
+    madSlider.addEventListener('input', () => {
+      madValue.textContent = madSlider.value;
+      madHidden.value = madSlider.value;
+      madValue.classList.remove('pulse');
+      madValue.offsetWidth;
+      madValue.classList.add('pulse');
+      setTimeout(() => madValue.classList.remove('pulse'), 250);
+    });
+    madHidden.value = madSlider.value;
+
+    function showStep(n) {
+      steps.forEach((s, i) => s.classList.toggle('active', i === n));
+      progressDots.forEach((d, i) => d.classList.toggle('active', i === n));
+      btnPrev.style.display = n === 0 ? 'none' : 'block';
+      btnNext.style.display = n === steps.length - 1 ? 'none' : 'block';
+      btnSubmit.style.display = n === steps.length - 1 ? 'block' : 'none';
+      currentStep = n;
+    }
+
+    btnPrev.addEventListener('click', () => showStep(Math.max(0, currentStep - 1)));
+    btnNext.addEventListener('click', () => {
+      const stepEl = steps[currentStep];
+      const required = stepEl.querySelector('[required]');
+      if (required && !stepEl.querySelector('input:checked') && !stepEl.querySelector('#mad-slider')) return;
+      if (currentStep === 0) madHidden.value = madSlider.value;
+      showStep(Math.min(steps.length - 1, currentStep + 1));
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      madHidden.value = madSlider.value;
+      document.getElementById('ignoring').value = form.querySelector('input[name="ignoring"]:checked')?.value || '';
+      document.getElementById('forgive').value = form.querySelector('input[name="forgive"]:checked')?.value || '';
+
+      const formData = new FormData(form);
+      try {
+        await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+        modalOverlay.classList.add('active');
+      } catch (err) {
+        alert('Something went wrong. Please try again.');
+      }
+    });
+
+    document.getElementById('modal-close').addEventListener('click', () => {
+      modalOverlay.classList.remove('active');
+    });
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) modalOverlay.classList.remove('active');
+    });
+  </script>
+</body>
+</html>
