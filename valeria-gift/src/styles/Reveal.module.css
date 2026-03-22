@@ -1,0 +1,60 @@
+.inner {
+  position: relative; z-index: 2;
+  text-align: center; max-width: 460px; width: 100%;
+}
+
+.name {
+  font-size: clamp(3.2rem, 10vw, 5.5rem);
+  margin-bottom: 0.2rem;
+  animation: fadeUp 0.8s 0.2s ease both;
+}
+
+.sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem; color: var(--cream-dim);
+  opacity: 0.6; letter-spacing: 0.08em; margin-bottom: 2.5rem;
+  animation: fadeUp 0.8s 0.4s ease both;
+}
+
+.card {
+  background: linear-gradient(140deg, var(--green-mid) 0%, var(--green-card) 50%, var(--green-mid) 100%);
+  border: 1px solid rgba(242,237,228,0.12);
+  border-radius: 18px; padding: 2.5rem 2rem;
+  position: relative; overflow: hidden; margin-bottom: 2.5rem;
+  animation: fadeUp 0.8s 0.6s ease both;
+}
+
+.shine {
+  position: absolute; top: -60%; right: -20%;
+  width: 220px; height: 220px;
+  background: radial-gradient(circle, rgba(242,237,228,0.04), transparent 70%);
+  border-radius: 50%;
+}
+
+.brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem; font-weight: 600; letter-spacing: 0.35em;
+  color: var(--cream); text-transform: uppercase; margin-bottom: 0.4rem;
+}
+
+.tag {
+  font-size: 0.56rem; letter-spacing: 0.42em;
+  text-transform: uppercase; color: var(--cream-dim);
+  opacity: 0.55; margin-bottom: 1.5rem;
+}
+
+.amount {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.8rem; font-weight: 300; color: var(--cream); line-height: 1;
+}
+
+.currency {
+  font-size: 0.68rem; color: var(--cream-dim);
+  opacity: 0.5; margin-top: 0.3rem; letter-spacing: 0.12em;
+}
+
+.msg {
+  font-size: 0.76rem; color: var(--cream-dim);
+  opacity: 0.55; line-height: 1.8; margin-bottom: 2rem; font-style: italic;
+  animation: fadeUp 0.8s 0.8s ease both;
+}

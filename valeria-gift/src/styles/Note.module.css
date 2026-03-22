@@ -1,0 +1,25 @@
+.inner {
+  position: relative; z-index: 2;
+  text-align: center; max-width: 420px; width: 100%;
+}
+
+.card {
+  background: linear-gradient(140deg, var(--green-mid), var(--green-card));
+  border: 1px solid rgba(242,237,228,0.12);
+  border-radius: 18px; padding: 3rem 2.5rem;
+  position: relative; overflow: hidden; margin-bottom: 2rem;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+
+.from {
+  font-size: 0.54rem; letter-spacing: 0.46em;
+  text-transform: uppercase; color: var(--cream-dim);
+  opacity: 0.6; margin-bottom: 1.5rem;
+}
+
+.text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.6rem, 5vw, 2.2rem);
+  font-weight: 300; font-style: italic;
+  color: var(--cream); line-height: 1.4;
+}

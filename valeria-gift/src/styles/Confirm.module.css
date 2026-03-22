@@ -1,0 +1,66 @@
+.inner {
+  position: relative; z-index: 2;
+  text-align: center; max-width: 440px; width: 100%;
+}
+
+.question {
+  font-size: clamp(3rem, 10vw, 5.5rem);
+  margin-bottom: 0.75rem;
+  animation: fadeUp 0.8s 0.2s ease both;
+}
+
+.sub {
+  font-size: 0.62rem; letter-spacing: 0.26em;
+  text-transform: uppercase; color: var(--cream-dim);
+  opacity: 0.5; margin-bottom: 3.5rem;
+  animation: fadeUp 0.8s 0.4s ease both;
+}
+
+.notComing {
+  background: none; border: none; cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.55rem; font-weight: 400; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--cream-dim);
+  opacity: 0.3; margin-top: 1.4rem; display: block; width: 100%;
+  transition: opacity 0.3s ease;
+}
+.notComing:hover { opacity: 0.6; }
+
+.backdrop {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(15,31,23,0.75);
+  backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 2rem;
+  animation: fadeUp 0.25s ease both;
+}
+
+.modal {
+  background: var(--green-mid);
+  border: 1px solid rgba(242,237,228,0.14);
+  border-radius: 18px; padding: 2.5rem 2rem;
+  width: 100%; max-width: 360px;
+  text-align: center;
+  position: relative;
+}
+
+.modalTitle {
+  font-size: clamp(2.2rem, 8vw, 3rem);
+  margin-bottom: 0.6rem;
+}
+
+.modalSub {
+  font-size: 0.62rem; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--cream-dim);
+  opacity: 0.45; margin-bottom: 2rem;
+}
+
+.modalNo {
+  background: none; border: none; cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.52rem; font-weight: 400; letter-spacing: 0.28em;
+  text-transform: uppercase; color: var(--cream-dim);
+  opacity: 0.3; margin-top: 1.2rem; display: block; width: 100%;
+  transition: opacity 0.3s ease;
+}
+.modalNo:hover { opacity: 0.6; }

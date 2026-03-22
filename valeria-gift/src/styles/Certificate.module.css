@@ -1,0 +1,64 @@
+.inner {
+  position: relative; z-index: 2;
+  text-align: center; max-width: 480px; width: 100%;
+}
+
+.certificate {
+  background: linear-gradient(160deg, var(--green-mid), var(--green-card));
+  border: 1px solid rgba(242,237,228,0.14);
+  border-radius: 18px; padding: 2.5rem 2rem 2rem;
+  position: relative; overflow: hidden; margin-bottom: 2rem;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+
+.iconWrap {
+  display: flex; justify-content: center; margin: 0 auto 1.25rem;
+}
+
+.label {
+  font-size: 0.56rem; letter-spacing: 0.46em;
+  text-transform: uppercase; color: var(--cream-dim);
+  margin-bottom: 0.4rem; opacity: 0.7;
+}
+
+.name {
+  font-size: 3rem; margin-bottom: 0.2rem; color: var(--cream);
+}
+
+.forText {
+  font-size: 0.6rem; letter-spacing: 0.22em;
+  color: var(--cream-dim); opacity: 0.6;
+}
+
+.amount {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem; color: var(--cream);
+  margin: 0.5rem 0; font-weight: 400;
+}
+
+.detail {
+  font-size: 0.66rem; letter-spacing: 0.16em;
+  color: var(--cream-dim); line-height: 2.2;
+  text-transform: uppercase; opacity: 0.75;
+}
+
+.detail strong { color: var(--cream); font-weight: 500; }
+
+.signatureWrap {
+  margin-top: 1.5rem; padding-top: 1.25rem;
+  border-top: 1px solid rgba(242,237,228,0.15);
+  display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+}
+
+.signature {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2rem; color: var(--cream);
+  animation: signatureDraw 0.8s 1.2s ease both;
+  transform: rotate(-1deg);
+}
+
+.signatureLabel {
+  font-size: 0.48rem; letter-spacing: 0.38em;
+  text-transform: uppercase; color: var(--cream-dim);
+  animation: fadeUp 0.6s 1.6s ease both;
+}
