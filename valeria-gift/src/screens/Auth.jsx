@@ -73,7 +73,7 @@ export default function Auth() {
           Wrong password. Try again.
         </div>
         <div className={`${s.hintBubble} ${hintOpen ? s.hintBubbleShow : ''}`}>
-          Al Capone knew the word. So do you.
+          Contact support.
         </div>
         <button className="btnGhost" style={{ marginTop: '2rem' }} onClick={handleSubmit}>
           Enter
