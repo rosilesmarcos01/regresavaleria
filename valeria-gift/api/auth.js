@@ -5,7 +5,7 @@ export default function handler(req, res) {
 
   const { password } = req.body
 
-  // Secret lives server-side only — set GIFT_PASSWORD in Vercel env vars
+  // Secret lives servedfdfdfdfr-side only — set GIFT_PASSWORD in Vercel env vars
   const secret = process.env.GIFT_PASSWORD || 'speakeasy'
 
   if (password === secret) {
