@@ -27,7 +27,19 @@ export default function Certificate() {
 
           <div className="greenLine" />
 
-          <div className={s.amount}>$3,000 MXN at ZARA</div>
+          <div className={s.amountLabel}>at ZARA</div>
+
+          <div className={s.balanceWrap}>
+            <div className={s.balanceRow}>
+              <span className={s.balanceUsed}>$1,000 used</span>
+              <span className={s.balanceRemain}>$2,000 left</span>
+            </div>
+            <div className={s.barTrack}>
+              <div className={s.barFill} />
+            </div>
+            <div className={s.balanceTotal}>of $3,000 MXN</div>
+          </div>
+
           <div className={s.detail}>
             With an exclusive personal shopper<br />
             <strong>Tuesday, March 24th</strong><br />
