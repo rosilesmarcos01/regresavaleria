@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom'
 import BgOrbs from '../components/BgOrbs'
 import s from '../styles/Certificate.module.css'
 
@@ -42,8 +41,7 @@ export default function Certificate() {
 
           <div className={s.detail}>
             With an exclusive personal shopper<br />
-            <strong>Tuesday, March 24th</strong><br />
-            Starting at <strong>5:00 PM</strong>
+            <strong>No expiratioin date</strong><br />
           </div>
 
           <div className={s.signatureWrap}>
