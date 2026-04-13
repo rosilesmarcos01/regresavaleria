@@ -1,37 +1,71 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import Auth from './screens/Auth'
-import Mystery from './screens/Mystery'
-import Note from './screens/Note'
-import Reveal from './screens/Reveal'
-import Choice from './screens/Choice'
-import Nudge from './screens/Nudge'
-import Certificate from './screens/Certificate'
-import Movie from './screens/Movie'
-import Confirm from './screens/Confirm'
-import Accepted from './screens/Accepted'
+import { useEffect, useMemo, useState } from 'react'
 
-const isAuth = () => sessionStorage.getItem('vg_auth') === 'true'
+/** Local midnight at the start of April 9, 2027 */
+const TARGET = new Date(2027, 3, 9, 0, 0, 0, 0)
 
-function Protected({ children }) {
-  return isAuth() ? children : <Navigate to="/" replace />
+function pad(n) {
+  return String(n).padStart(2, '0')
+}
+
+function diffParts(ms) {
+  if (ms <= 0) {
+    return { days: 0, hours: 0, minutes: 0, seconds: 0, done: true }
+  }
+  const sec = Math.floor(ms / 1000)
+  const days = Math.floor(sec / 86400)
+  const hours = Math.floor((sec % 86400) / 3600)
+  const minutes = Math.floor((sec % 3600) / 60)
+  const seconds = sec % 60
+  return { days, hours, minutes, seconds, done: false }
 }
 
 export default function App() {
+  const [now, setNow] = useState(() => Date.now())
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 1000)
+    return () => clearInterval(id)
+  }, [])
+
+  const parts = useMemo(
+    () => diffParts(TARGET.getTime() - now),
+    [now]
+  )
+
+  if (parts.done) {
+    return (
+      <main className="wrap">
+        <p className="label">April 9, 2027</p>
+        <h1 className="title">We are here.</h1>
+      </main>
+    )
+  }
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/"            element={<Auth />} />
-        <Route path="/mystery"     element={<Protected><Mystery /></Protected>} />
-        <Route path="/note"        element={<Protected><Note /></Protected>} />
-        <Route path="/reveal"      element={<Protected><Reveal /></Protected>} />
-        <Route path="/choice"      element={<Protected><Choice /></Protected>} />
-        <Route path="/nudge"       element={<Protected><Nudge /></Protected>} />
-        <Route path="/certificate" element={<Protected><Certificate /></Protected>} />
-        <Route path="/movie"       element={<Protected><Movie /></Protected>} />
-        <Route path="/confirm"     element={<Protected><Confirm /></Protected>} />
-        <Route path="/accepted"    element={<Protected><Accepted /></Protected>} />
-        <Route path="*"            element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+    <main className="wrap">
+      <div
+        className="grid"
+        role="timer"
+        aria-live="polite"
+        aria-label="Time until April 9, 2027"
+      >
+        <div className="cell">
+          <span className="num">{parts.days}</span>
+          <span className="unit">days</span>
+        </div>
+        <div className="cell">
+          <span className="num">{pad(parts.hours)}</span>
+          <span className="unit">hours</span>
+        </div>
+        <div className="cell">
+          <span className="num">{pad(parts.minutes)}</span>
+          <span className="unit">minutes</span>
+        </div>
+        <div className="cell">
+          <span className="num">{pad(parts.seconds)}</span>
+          <span className="unit">seconds</span>
+        </div>
+      </div>
+    </main>
   )
 }
