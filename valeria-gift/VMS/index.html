@@ -1266,7 +1266,7 @@
           <div class="wc-text"><strong>60+ users</strong> are already waiting — join them!</div>
         </div>
 
-        <form class="modal-form" onsubmit="submitForm(event)">
+        <form class="modal-form" id="vms-waitlist-form" action="#" method="post">
           <input class="modal-input" type="text" placeholder="First name" id="inputName" required />
           <input class="modal-input" type="email" placeholder="Email address" id="inputEmail" required />
           <p id="modalFormError" class="modal-form-error" role="alert" hidden></p>
@@ -1323,7 +1323,7 @@
       if (e.target === document.getElementById('modalOverlay')) closeModal();
     }
 
-    window.submitForm = async function submitForm(e) {
+    async function submitForm(e) {
       e.preventDefault();
       const errEl = document.getElementById('modalFormError');
       const btn = document.getElementById('modalSubmitBtn');
@@ -1353,18 +1353,18 @@
           return;
         }
         try {
-          const fnRes = await fetch(
-            `${SUPABASE_URL}/functions/v1/send-waitlist-welcome`,
-            {
-              method: 'POST',
-              headers: {
-                Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
-                apikey: SUPABASE_PUBLISHABLE_KEY,
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ email }),
+          const fnUrl = `${SUPABASE_URL}/functions/v1/send-waitlist-welcome`;
+          console.info('[VMS] Calling Edge Function', fnUrl);
+          const fnRes = await fetch(fnUrl, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+              apikey: SUPABASE_PUBLISHABLE_KEY,
+              'Content-Type': 'application/json',
             },
-          );
+            body: JSON.stringify({ email }),
+          });
+          console.info('[VMS] Edge Function response', fnRes.status);
           const fnText = await fnRes.text();
           let fnBody;
           try {
@@ -1388,7 +1388,14 @@
       } finally {
         btn.disabled = false;
       }
-    };
+    }
+
+    window.submitForm = submitForm;
+
+    const waitlistForm = document.getElementById('vms-waitlist-form');
+    if (waitlistForm) {
+      waitlistForm.addEventListener('submit', submitForm);
+    }
 
     window.openModal = openModal;
     window.closeModal = closeModal;
