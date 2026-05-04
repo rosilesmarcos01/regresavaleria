@@ -1353,12 +1353,31 @@
           return;
         }
         try {
-          const { error: fnError } = await supabase.functions.invoke(
-            'send-waitlist-welcome',
-            { body: { email } },
+          const fnRes = await fetch(
+            `${SUPABASE_URL}/functions/v1/send-waitlist-welcome`,
+            {
+              method: 'POST',
+              headers: {
+                Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+                apikey: SUPABASE_PUBLISHABLE_KEY,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ email }),
+            },
           );
-          if (fnError) {
-            console.warn('Welcome email could not be sent:', fnError.message);
+          const fnText = await fnRes.text();
+          let fnBody;
+          try {
+            fnBody = fnText ? JSON.parse(fnText) : {};
+          } catch {
+            fnBody = { raw: fnText };
+          }
+          if (!fnRes.ok) {
+            console.warn(
+              'Welcome email could not be sent:',
+              fnRes.status,
+              fnBody,
+            );
           }
         } catch (w) {
           console.warn('Welcome email could not be sent:', w);

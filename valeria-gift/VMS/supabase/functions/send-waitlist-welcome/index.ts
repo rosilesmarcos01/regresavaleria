@@ -6,6 +6,7 @@ const TEMPLATE = Deno.readTextFileSync(
 
 const corsHeaders: Record<string, string> = {
   "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type",
 };
@@ -117,8 +118,9 @@ Deno.serve(async (req) => {
     }
 
     const ageMs = Date.now() - new Date(row.created_at as string).getTime();
-    if (ageMs > RECENT_MS || ageMs < -60_000) {
-      return new Response(JSON.stringify({ error: "Stale or invalid signup" }), {
+    // Only reject stale rows; allow moderate DB clock skew (do not require ageMs >= 0).
+    if (ageMs > RECENT_MS) {
+      return new Response(JSON.stringify({ error: "Stale signup" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
