@@ -1,0 +1,8 @@
+# Supabase CLI — run from valeria-gift/VMS: supabase link / functions deploy / secrets set
+# https://supabase.com/docs/guides/cli/config
+
+project_id = "ptchalkhzkdedymxjpqh"
+
+[functions.send-waitlist-welcome]
+# Anonymous marketing site has no user JWT; publishable keys are not Bearer JWTs.
+verify_jwt = false

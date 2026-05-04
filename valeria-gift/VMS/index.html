@@ -1331,7 +1331,7 @@
       errEl.hidden = true;
 
       const name = document.getElementById('inputName').value.trim();
-      const email = document.getElementById('inputEmail').value.trim();
+      const email = document.getElementById('inputEmail').value.trim().toLowerCase();
 
       if (!supabase) {
         errEl.textContent =
@@ -1351,6 +1351,17 @@
           }
           errEl.hidden = false;
           return;
+        }
+        try {
+          const { error: fnError } = await supabase.functions.invoke(
+            'send-waitlist-welcome',
+            { body: { email } },
+          );
+          if (fnError) {
+            console.warn('Welcome email could not be sent:', fnError.message);
+          }
+        } catch (w) {
+          console.warn('Welcome email could not be sent:', w);
         }
         document.getElementById('successName').textContent = name || 'you';
         document.getElementById('modalForm').style.display = 'none';
