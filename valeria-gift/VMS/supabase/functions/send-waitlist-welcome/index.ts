@@ -5,13 +5,13 @@ const WAITLIST_EMAIL_TEMPLATE = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VMS — You're on the list</title>
+  <title>VMS — Confirm your email</title>
 </head>
 <body style="margin:0;padding:0;background:#f4f4f5;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;color:#18181b;">
 
   <!-- Preheader -->
   <div style="display:none;max-height:0;overflow:hidden;color:#f4f4f5;">
-    You're officially on the VMS founding cohort. Welcome.
+    Confirm this email to finish joining the VMS waitlist.
   </div>
 
   <!-- Wrapper -->
@@ -40,7 +40,7 @@ const WAITLIST_EMAIL_TEMPLATE = `<!DOCTYPE html>
                 <tr>
                   <td style="padding-bottom:24px;">
                     <span style="display:inline-block;background:#eef2ff;color:#6366f1;padding:5px 14px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;">
-                      ✦ &nbsp;Beta Access Confirmed
+                      Action required
                     </span>
                   </td>
                 </tr>
@@ -49,7 +49,7 @@ const WAITLIST_EMAIL_TEMPLATE = `<!DOCTYPE html>
                 <tr>
                   <td style="padding-bottom:12px;">
                     <h1 style="margin:0;font-family:system-ui,-apple-system,sans-serif;font-size:28px;font-weight:700;color:#09090b;line-height:1.15;letter-spacing:-0.025em;">
-                      You're on the list,<br/>{{first_name}}.
+                      Confirm your email,<br/>{{first_name}}.
                     </h1>
                   </td>
                 </tr>
@@ -58,10 +58,10 @@ const WAITLIST_EMAIL_TEMPLATE = `<!DOCTYPE html>
                 <tr>
                   <td style="padding-bottom:32px;">
                     <p style="margin:0 0 16px 0;font-size:15px;color:#71717a;line-height:1.75;font-weight:300;">
-                      Welcome to VMS. You've been randomly selected from our founding cohort to receive an exclusive set of member rewards — consider it your lucky day.
+                      Thanks for signing up for the VMS waitlist. Tap the button below to verify this address and complete your signup — it only takes a moment.
                     </p>
                     <p style="margin:0;font-size:15px;color:#71717a;line-height:1.75;font-weight:300;">
-                      We'll be in touch when the app is ready. In the meantime, your rewards are waiting.
+                      If you did not join the VMS waitlist, you can ignore this email.
                     </p>
                   </td>
                 </tr>
@@ -70,7 +70,7 @@ const WAITLIST_EMAIL_TEMPLATE = `<!DOCTYPE html>
                 <tr>
                   <td align="center" style="padding-bottom:36px;">
                     <a href="https://regresavaleria.com/benefits" style="display:inline-block;background:#09090b;color:#ffffff;text-decoration:none;font-size:15px;font-weight:600;padding:14px 36px;border-radius:100px;letter-spacing:-0.01em;">
-                      Claim Your Benefits →
+                      Verify email address
                     </a>
                   </td>
                 </tr>
@@ -86,7 +86,7 @@ const WAITLIST_EMAIL_TEMPLATE = `<!DOCTYPE html>
                 <tr>
                   <td>
                     <p style="margin:0;font-size:12px;color:#a1a1aa;line-height:1.7;">
-                      This link is yours. Don't share it — founding member benefits are one per account.
+                      This link is tied to your signup. Do not forward it; anyone with the link can confirm access for this waitlist entry.
                     </p>
                   </td>
                 </tr>
@@ -160,9 +160,10 @@ function buildPlainText(firstName: string): string {
   return [
     `Hi ${n},`,
     "",
-    "You're on the VMS waitlist. We'll email you when the app is ready.",
+    "Thanks for joining the VMS waitlist. Use the link below to verify this email and complete your signup.",
     "",
-    "If the button in our HTML email doesn't work, open:",
+    "If you did not join the waitlist, you can ignore this message.",
+    "",
     "https://regresavaleria.com/benefits",
     "",
     "— VMS (Valeria Management System)",
@@ -280,7 +281,7 @@ Deno.serve(async (req) => {
       body: JSON.stringify({
         from,
         to: [row.email as string],
-        subject: "You're on the list — VMS",
+        subject: "Confirm your email — VMS",
         html,
         text,
         reply_to: replyTo,
