@@ -170,7 +170,8 @@ Deno.serve(async (req) => {
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     const resendKey = Deno.env.get("RESEND_API_KEY");
-    const from = Deno.env.get("RESEND_FROM") ?? "VMS <onboarding@resend.dev>";
+    const from =
+      Deno.env.get("RESEND_FROM") ?? "VMS <waitlist@regresavaleria.com>";
 
     if (!supabaseUrl || !serviceKey) {
       console.error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
