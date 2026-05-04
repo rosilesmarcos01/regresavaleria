@@ -154,6 +154,22 @@ function buildHtml(firstName: string): string {
   );
 }
 
+/** Plain-text part improves multipart scoring vs HTML-only. */
+function buildPlainText(firstName: string): string {
+  const n = firstName.trim() || "there";
+  return [
+    `Hi ${n},`,
+    "",
+    "You're on the VMS waitlist. We'll email you when the app is ready.",
+    "",
+    "If the button in our HTML email doesn't work, open:",
+    "https://regresavaleria.com/benefits",
+    "",
+    "— VMS (Valeria Management System)",
+    "https://regresavaleria.com",
+  ].join("\n");
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -252,6 +268,8 @@ Deno.serve(async (req) => {
 
     const first = firstNameFromFull(String(row.name ?? ""));
     const html = buildHtml(first);
+    const text = buildPlainText(first);
+    const replyTo = "hello@regresavaleria.com";
 
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -264,6 +282,8 @@ Deno.serve(async (req) => {
         to: [row.email as string],
         subject: "You're on the list — VMS",
         html,
+        text,
+        reply_to: replyTo,
       }),
     });
 
