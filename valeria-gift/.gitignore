@@ -1,3 +1,4 @@
 node_modules
 dist
 public/archive
+.DS_Store
