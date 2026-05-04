@@ -858,9 +858,25 @@
       width: 64px; height: 64px;
       background: linear-gradient(135deg, var(--plum), var(--violet));
       border-radius: 20px;
-      display: flex; align-items: center; justify-content: center;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 3px;
       margin: 0 auto 1.25rem;
-      font-size: 1.75rem;
+    }
+    .success-icon .success-logo-text {
+      font-family: var(--font-body);
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--white);
+      line-height: 1;
+    }
+    .success-icon .success-logo-dot {
+      display: inline-block;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--lavender);
+      margin-bottom: 2px;
+      flex-shrink: 0;
     }
     .modal-success h3 {
       font-family: var(--font-display);
@@ -1276,7 +1292,9 @@
       </div>
 
       <div class="modal-success" id="modalSuccess">
-        <div class="success-icon">✦</div>
+        <div class="success-icon" role="img" aria-label="VMS">
+          <span class="success-logo-text">vms</span><span class="success-logo-dot" aria-hidden="true"></span>
+        </div>
         <h3>You're on the list!</h3>
         <p>You're in, <span id="successName"></span>. We'll be in touch soon — check your inbox, there might already be something waiting for you.</p>
         <div class="success-hint">Check your email for a surprise</div>
