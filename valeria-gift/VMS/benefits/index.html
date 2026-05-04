@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VMS — Founding Member Benefits</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --plum:      #09090b;
+      --plum-mid:  #18181b;
+      --violet:    #6366f1;
+      --violet-lt: #818cf8;
+      --lavender:  #a5b4fc;
+      --lav-soft:  #eef2ff;
+      --cream:     #fafafa;
+      --font-display: 'Outfit', system-ui, sans-serif;
+      --font-body:    'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: var(--font-body);
+      background: var(--plum);
+      color: var(--cream);
+      overflow: hidden;
+    }
+
+    /* ── BACKGROUND ── */
+    .bg {
+      position: fixed; inset: 0; z-index: 0;
+    }
+    .bg::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+      top: -100px; right: -100px;
+      animation: driftA 12s ease-in-out infinite;
+    }
+    .bg::after {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(165,180,252,0.08) 0%, transparent 70%);
+      bottom: -80px; left: -80px;
+      animation: driftB 15s ease-in-out infinite;
+    }
+    @keyframes driftA {
+      0%, 100% { transform: translate(0,0); }
+      50% { transform: translate(-30px, 30px); }
+    }
+    @keyframes driftB {
+      0%, 100% { transform: translate(0,0); }
+      50% { transform: translate(20px, -20px); }
+    }
+
+    /* ── LOGO ── */
+    .logo {
+      position: fixed; top: 2rem; left: 50%; transform: translateX(-50%);
+      z-index: 10;
+      display: flex; align-items: center;
+    }
+    .logo-text {
+      font-family: var(--font-body);
+      font-size: 1.2rem; font-weight: 700;
+      letter-spacing: -0.04em;
+      color: rgba(250,250,250,0.5);
+    }
+    .logo-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--violet);
+      margin-left: 2px; margin-bottom: 2px;
+      display: inline-block; vertical-align: baseline;
+    }
+
+    /* ── STEP DOTS ── */
+    .step-dots {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 0.5rem; align-items: center; z-index: 10;
+    }
+    .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      transition: background 0.3s, width 0.3s;
+    }
+    .dot.active { background: var(--lavender); width: 20px; border-radius: 100px; }
+
+    /* ── STAGE ── */
+    .stage {
+      position: relative; z-index: 1;
+      height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 5rem 1.5rem 4rem;
+    }
+
+    /* ── STEPS ── */
+    .step {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      max-width: 440px;
+      width: 100%;
+      animation: stepIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .step.active { display: flex; }
+    .step.step-final { max-width: 460px; }
+    @keyframes stepIn {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── STEP 1 — VERIFICATION ── */
+    .verify-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: color-mix(in srgb, var(--lavender) 12%, transparent);
+      border: 1px solid color-mix(in srgb, var(--lavender) 25%, transparent);
+      color: var(--lavender);
+      padding: 0.4rem 1rem; border-radius: 100px;
+      font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .verify-badge::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--lavender);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    .verify-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 700; letter-spacing: -0.03em;
+      color: var(--cream); line-height: 1.1;
+      margin-bottom: 0.75rem;
+    }
+    .verify-title em { font-style: italic; color: var(--lavender); }
+
+    .verify-sub {
+      font-size: 0.95rem;
+      color: rgba(250,250,250,0.5);
+      font-weight: 300; margin-bottom: 2.5rem; line-height: 1.6;
+    }
+
+    .progress-wrap { width: 100%; max-width: 320px; margin-bottom: 1rem; }
+    .progress-track {
+      height: 4px; background: rgba(255,255,255,0.08);
+      border-radius: 100px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; border-radius: 100px;
+      background: linear-gradient(90deg, var(--violet), var(--lavender));
+      width: 0%; transition: width 0.1s linear;
+    }
+    .progress-label {
+      font-size: 0.72rem; color: rgba(250,250,250,0.35);
+      margin-top: 0.6rem; letter-spacing: 0.04em;
+    }
+
+    .verified-tag-wrap {
+      display: none; margin-top: 1rem;
+      animation: stepIn 0.5s ease forwards;
+    }
+    .verified-tag-wrap.show { display: flex; }
+    .verified-tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(34,197,94,0.12);
+      border: 1px solid rgba(34,197,94,0.25);
+      color: #86efac; padding: 0.4rem 1rem;
+      border-radius: 100px; font-size: 0.8rem; font-weight: 500;
+    }
+    .verified-tag::before { content: '✓'; font-size: 0.85rem; }
+
+    /* ── RANDOM SELECTION (after verify, before sealed card) ── */
+    .random-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(99,102,241,0.14);
+      border: 1px solid rgba(129,140,248,0.35);
+      color: var(--lavender);
+      padding: 0.4rem 1rem; border-radius: 100px;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 1.75rem;
+    }
+    .random-badge::before {
+      content: '✦';
+      font-size: 0.65rem;
+      opacity: 0.9;
+    }
+    .random-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.65rem, 4.8vw, 2.45rem);
+      font-weight: 700; letter-spacing: -0.03em;
+      color: var(--cream); line-height: 1.12;
+      margin-bottom: 1rem;
+    }
+    .random-title em { font-style: italic; color: var(--lavender); }
+    .random-sub {
+      font-size: 0.95rem;
+      color: rgba(250,250,250,0.52);
+      font-weight: 300;
+      line-height: 1.65;
+      margin-bottom: 2.25rem;
+      max-width: 26rem;
+    }
+
+    /* ── SEALED CARD (post-verify teaser) ── */
+    .sealed-intro {
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(165,180,252,0.55);
+      margin-bottom: 1rem;
+    }
+    .sealed-card-inner {
+      position: absolute; inset: 0;
+      border-radius: inherit;
+      overflow: hidden;
+    }
+    /* “Face down” — card back, same footprint as unlocked cards */
+    .sealed-back {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(128deg, #0c0b14 0%, #1a1740 42%, #12101f 100%);
+    }
+    .sealed-back::before {
+      content: '';
+      position: absolute; inset: 0;
+      opacity: 0.45;
+      background:
+        repeating-linear-gradient(
+          -52deg,
+          transparent, transparent 22px,
+          rgba(255,255,255,0.04) 22px,
+          rgba(255,255,255,0.04) 44px
+        ),
+        radial-gradient(ellipse 80% 55% at 50% 40%, rgba(99,102,241,0.18) 0%, transparent 62%);
+    }
+    .sealed-back::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(0,0,0,0.35) 100%);
+    }
+    .sealed-monogram {
+      position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: inset 0 0 40px rgba(99,102,241,0.08);
+    }
+    .sealed-monogram span {
+      font-family: var(--font-body);
+      font-size: 1.35rem; font-weight: 800;
+      letter-spacing: -0.06em;
+      color: rgba(255,255,255,0.22);
+    }
+    .sealed-monogram .sealed-mg-dot {
+      display: inline-block; width: 5px; height: 5px;
+      border-radius: 50%; background: rgba(99,102,241,0.45);
+      margin-left: 2px; margin-bottom: 2px; vertical-align: baseline;
+    }
+    /* Ghost of the real card — heavily frosted / blurred underneath */
+    .sealed-ghost {
+      position: absolute; inset: -8%;
+      background: linear-gradient(135deg, #312e81 0%, #4c46b8 55%, #6366f1 100%);
+      filter: blur(22px) saturate(1.1);
+      opacity: 0.35;
+      transform: scale(0.92);
+    }
+    .sealed-frost {
+      position: absolute; inset: 0;
+      border-radius: inherit;
+      background: rgba(9,9,15,0.52);
+      backdrop-filter: blur(14px) saturate(1.15);
+      -webkit-backdrop-filter: blur(14px) saturate(1.15);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 1.75rem 1.5rem;
+      text-align: center;
+    }
+    .sealed-frost::before {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: inherit;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+      pointer-events: none;
+    }
+    .sealed-chip {
+      position: relative; z-index: 1;
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(165,180,252,0.2);
+      color: rgba(165,180,252,0.85);
+      padding: 0.35rem 0.85rem; border-radius: 100px;
+      font-size: 0.62rem; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+    .sealed-chip::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(165,180,252,0.5);
+      box-shadow: 0 0 0 2px rgba(165,180,252,0.15);
+    }
+    .sealed-message {
+      position: relative; z-index: 1;
+      font-family: var(--font-display);
+      font-size: clamp(1.05rem, 3.2vw, 1.28rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.45;
+      color: rgba(250,250,250,0.92);
+      max-width: 17.5rem;
+    }
+    .sealed-message em {
+      font-style: italic; font-weight: 500;
+      color: var(--lavender);
+    }
+
+    /* ── BENEFIT STEP HEADER (Dinner + two nails cards) ── */
+    .benefit-number {
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(165,180,252,0.5);
+      margin-bottom: 1.25rem;
+    }
+
+    /* ── GIFT CARD ── */
+    .gift-card {
+      width: 100%;
+      aspect-ratio: 1.586;
+      border-radius: 20px;
+      position: relative; overflow: hidden;
+      margin-bottom: 2rem;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.07),
+        0 30px 70px rgba(0,0,0,0.55),
+        0 8px 24px rgba(99,102,241,0.25);
+      animation: cardFloat 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes cardFloat {
+      from { opacity: 0; transform: translateY(32px) scale(0.95) rotateX(4deg); }
+      to   { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); }
+    }
+
+    /* Card gradient background */
+    .gc-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 45%, #4c46b8 75%, #6366f1 100%);
+    }
+    .gc-bg::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 90% 70% at 110% -10%, rgba(165,180,252,0.3) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 60% at -10% 110%, rgba(99,102,241,0.4) 0%, transparent 55%);
+    }
+    /* Subtle diagonal lines texture */
+    .gc-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        -55deg,
+        transparent, transparent 30px,
+        rgba(255,255,255,0.018) 30px,
+        rgba(255,255,255,0.018) 60px
+      );
+    }
+
+    /* Decorative circle */
+    .gc-circle {
+      position: absolute;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.07);
+      top: -60px; right: -40px;
+    }
+    .gc-circle-2 {
+      position: absolute;
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.05);
+      bottom: -50px; left: -30px;
+    }
+
+    .gc-inner {
+      position: relative; z-index: 2;
+      height: 100%; padding: 1.4rem 1.6rem;
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .gc-top {
+      display: flex; align-items: center;
+      justify-content: space-between;
+    }
+    .gc-logo {
+      font-family: var(--font-body);
+      font-size: 1rem; font-weight: 700;
+      letter-spacing: -0.04em;
+      color: rgba(255,255,255,0.85);
+    }
+    .gc-logo-dot {
+      display: inline-block; width: 4px; height: 4px;
+      border-radius: 50%; background: var(--lavender);
+      margin-left: 1px; margin-bottom: 1px; vertical-align: baseline;
+    }
+    .gc-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.14);
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(8px);
+    }
+    .gc-icon svg {
+      width: 18px; height: 18px;
+      stroke: rgba(255,255,255,0.85); fill: none;
+      stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+    }
+
+    .gc-mid {
+      display: flex; flex-direction: column; gap: 0.2rem;
+    }
+    .gc-type {
+      font-size: 0.58rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+    }
+    .gc-name {
+      font-family: var(--font-display);
+      font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+      font-weight: 700; letter-spacing: -0.025em;
+      color: #fff; line-height: 1.1;
+    }
+    .gc-desc {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.5);
+      font-weight: 300; margin-top: 0.25rem;
+      line-height: 1.5;
+    }
+
+    .gc-bottom {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .gc-member-label {
+      font-size: 0.55rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 0.2rem;
+    }
+    .gc-member-name {
+      font-size: 0.78rem; font-weight: 600;
+      color: rgba(255,255,255,0.8);
+      letter-spacing: 0.01em;
+    }
+    .gc-status {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      background: rgba(34,197,94,0.15);
+      border: 1px solid rgba(34,197,94,0.28);
+      color: #86efac;
+      padding: 0.22rem 0.65rem; border-radius: 100px;
+      font-size: 0.6rem; font-weight: 600;
+      letter-spacing: 0.05em; text-transform: uppercase;
+    }
+    .gc-status::before {
+      content: ''; width: 5px; height: 5px;
+      border-radius: 50%; background: #86efac;
+    }
+
+    /* ── STEP 4 — PR MEMBER PICKER ── */
+    .step.step-pr { max-width: 520px; }
+    .pr-team-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: color-mix(in srgb, var(--lavender) 10%, transparent);
+      border: 1px solid color-mix(in srgb, var(--lavender) 22%, transparent);
+      color: var(--lavender);
+      padding: 0.4rem 1rem; border-radius: 100px;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      margin-bottom: 1.75rem;
+    }
+    .pr-team-badge::before {
+      content: '';
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--violet);
+      opacity: 0.85;
+    }
+    .pr-picker-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.55rem, 4.2vw, 2.15rem);
+      font-weight: 700; letter-spacing: -0.03em;
+      color: var(--cream); line-height: 1.12;
+      margin-bottom: 0.75rem;
+    }
+    .pr-picker-sub {
+      font-size: 0.92rem;
+      color: rgba(250,250,250,0.5);
+      font-weight: 300; line-height: 1.6;
+      margin-bottom: 2rem;
+      max-width: 28rem;
+    }
+    .pr-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+      width: 100%;
+      margin-bottom: 0.25rem;
+    }
+    .pr-grid-row-full {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: center;
+    }
+    .pr-grid-row-full .pr-member-card {
+      width: 100%;
+      max-width: calc((100% - 0.85rem) / 2);
+    }
+    .pr-member-card {
+      position: relative;
+      text-align: left;
+      padding: 1.15rem 1.1rem 1rem;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(165,180,252,0.14);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+      backdrop-filter: blur(12px) saturate(1.1);
+      -webkit-backdrop-filter: blur(12px) saturate(1.1);
+      transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+    }
+    .pr-member-card::before {
+      content: '';
+      position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+    }
+    .pr-member-card--selected {
+      border-color: color-mix(in srgb, var(--violet) 65%, transparent);
+      box-shadow:
+        0 0 0 1px var(--violet),
+        0 12px 40px rgba(99,102,241,0.22);
+      background: color-mix(in srgb, var(--violet) 8%, rgba(255,255,255,0.04));
+    }
+    .pr-member-card--selected .pr-card-check {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .pr-card-check {
+      position: absolute;
+      top: 0.85rem; right: 0.85rem;
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--violet) 35%, rgba(9,9,11,0.6));
+      border: 1px solid color-mix(in srgb, var(--violet) 50%, transparent);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0;
+      transform: scale(0.85);
+      transition: opacity 0.25s, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .pr-card-check svg {
+      width: 13px; height: 13px;
+      stroke: var(--lav-soft);
+      fill: none;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .pr-card-top {
+      display: flex; align-items: flex-start; gap: 0.85rem;
+      margin-bottom: 1rem;
+    }
+    .pr-avatar {
+      flex-shrink: 0;
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #312e81 0%, var(--violet) 100%);
+      border: 1px solid rgba(255,255,255,0.12);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-body);
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.02em;
+      color: rgba(250,250,250,0.92);
+    }
+    .pr-card-meta { min-width: 0; }
+    .pr-card-name {
+      font-family: var(--font-display);
+      font-size: 0.95rem; font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--cream);
+      line-height: 1.2;
+      margin-bottom: 0.2rem;
+    }
+    .pr-card-title {
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: rgba(250,250,250,0.45);
+      line-height: 1.35;
+    }
+    .pr-card-foot {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .pr-available {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      background: rgba(34,197,94,0.12);
+      border: 1px solid rgba(34,197,94,0.28);
+      color: #86efac;
+      padding: 0.22rem 0.6rem; border-radius: 100px;
+      font-size: 0.58rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .pr-available::before {
+      content: '';
+      width: 5px; height: 5px; border-radius: 50%;
+      background: #86efac;
+    }
+    .pr-select-btn {
+      background: transparent;
+      color: var(--lavender);
+      border: 1px solid color-mix(in srgb, var(--lavender) 35%, transparent);
+      border-radius: 100px;
+      padding: 0.45rem 1.1rem;
+      font-family: var(--font-body);
+      font-size: 0.72rem; font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s, opacity 0.2s;
+    }
+    .pr-select-btn:hover:not(:disabled) {
+      background: color-mix(in srgb, var(--violet) 18%, transparent);
+      border-color: color-mix(in srgb, var(--violet) 45%, transparent);
+      color: var(--cream);
+    }
+    .pr-select-btn:disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+    .pr-member-card--selected .pr-select-btn {
+      border-color: color-mix(in srgb, var(--violet) 55%, transparent);
+      color: var(--cream);
+      background: color-mix(in srgb, var(--violet) 22%, transparent);
+    }
+
+    /* ── STEP 6 — FINAL ── */
+    .final-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 700; letter-spacing: -0.025em;
+      color: var(--cream); line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    .final-title em { font-style: italic; color: var(--lavender); }
+
+    .final-shell {
+      width: 100%;
+      max-width: 460px;
+      position: relative;
+    }
+    .final-hub.final-hub--hidden {
+      display: none;
+    }
+    .final-cards-hint {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: rgba(250,250,250,0.42);
+      margin: -0.35rem 0 1.1rem;
+      line-height: 1.45;
+    }
+
+    .final-cards {
+      display: flex; gap: 0.85rem;
+      width: 100%; margin-bottom: 1.5rem;
+    }
+    .final-cards--triple {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .final-cards--triple .final-mini-card {
+      flex: 1 1 calc(33.333% - 0.57rem);
+      min-width: 6.5rem;
+    }
+    .final-mini-card {
+      flex: 1;
+      border-radius: 16px; overflow: hidden;
+      position: relative;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .final-mini-card--tap {
+      cursor: pointer;
+      text-align: left;
+      border: 1px solid transparent;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .final-mini-card--tap:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 36px rgba(0,0,0,0.5), 0 0 0 1px rgba(165,180,252,0.2);
+    }
+    .final-mini-card--tap:focus {
+      outline: none;
+    }
+    .final-mini-card--tap:focus-visible {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 0 2px var(--violet), 0 0 0 4px rgba(99,102,241,0.25);
+    }
+    .fmc-chevron {
+      position: absolute;
+      bottom: 0.65rem;
+      right: 0.65rem;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .fmc-chevron svg {
+      width: 8px; height: 8px;
+      stroke: rgba(255,255,255,0.65);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .fmc-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #1e1b4b 0%, #4c46b8 100%);
+    }
+    .fmc-bg::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 100% 80% at 100% 0%, rgba(165,180,252,0.2) 0%, transparent 60%);
+    }
+    .fmc-inner {
+      position: relative; z-index: 2;
+      padding: 1rem 0.85rem;
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .fmc-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.12);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .fmc-icon svg {
+      width: 15px; height: 15px;
+      stroke: rgba(255,255,255,0.85); fill: none;
+      stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .fmc-name {
+      font-size: 0.72rem; font-weight: 600;
+      color: rgba(255,255,255,0.85); line-height: 1.2;
+    }
+    .fmc-tag {
+      font-size: 0.58rem; font-weight: 500;
+      color: #86efac; letter-spacing: 0.04em;
+    }
+
+    .final-message {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(165,180,252,0.12);
+      border-radius: 18px; padding: 1.5rem;
+      text-align: left; position: relative;
+    }
+    .final-message::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(165,180,252,0.3), transparent);
+    }
+    .final-message p {
+      font-size: 0.92rem;
+      color: rgba(250,250,250,0.7);
+      line-height: 1.8; font-weight: 300; margin: 0;
+    }
+    .final-message .sig {
+      margin-top: 1rem; font-size: 0.85rem;
+      color: var(--lavender); font-weight: 500; font-style: italic;
+    }
+
+    /* ── FINAL — REWARD DETAIL SHEETS ── */
+    .reward-detail {
+      display: none;
+      flex-direction: column;
+      align-items: stretch;
+      text-align: left;
+      width: 100%;
+      animation: stepIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .reward-detail.is-open {
+      display: flex;
+    }
+    .reward-detail-back {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 1.25rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 100px;
+      border: 1px solid color-mix(in srgb, var(--lavender) 30%, transparent);
+      background: rgba(255,255,255,0.04);
+      color: var(--lavender);
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .reward-detail-back:hover {
+      background: color-mix(in srgb, var(--violet) 15%, transparent);
+      border-color: color-mix(in srgb, var(--violet) 45%, transparent);
+      color: var(--cream);
+    }
+    .reward-detail-back svg {
+      width: 14px; height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .reward-detail-hero {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .reward-detail-icon-wrap {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .reward-detail-icon-wrap svg {
+      width: 24px; height: 24px;
+      stroke: rgba(255,255,255,0.88);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .reward-detail-hero-text { min-width: 0; }
+    .reward-detail-badge {
+      display: inline-block;
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(165,180,252,0.65);
+      margin-bottom: 0.35rem;
+    }
+    .reward-detail-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.25rem, 3.5vw, 1.55rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--cream);
+      line-height: 1.15;
+    }
+    .reward-detail-lead {
+      font-size: 0.88rem;
+      color: rgba(250,250,250,0.55);
+      font-weight: 300;
+      line-height: 1.55;
+      margin-bottom: 1.25rem;
+    }
+    .reward-detail-panel {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(165,180,252,0.12);
+      border-radius: 16px;
+      padding: 1.15rem 1.2rem;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .reward-detail-panel::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(165,180,252,0.25), transparent);
+    }
+    .reward-detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      padding: 0.55rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.8rem;
+    }
+    .reward-detail-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .reward-detail-row:first-child { padding-top: 0; }
+    .reward-detail-label {
+      color: rgba(250,250,250,0.38);
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+    .reward-detail-value {
+      color: rgba(250,250,250,0.88);
+      font-weight: 500;
+      text-align: right;
+    }
+    .reward-detail-value--mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      color: var(--lavender);
+    }
+    .reward-detail-value--status {
+      color: #86efac;
+    }
+    .reward-detail-list {
+      margin: 0;
+      padding-left: 1.1rem;
+      font-size: 0.86rem;
+      color: rgba(250,250,250,0.68);
+      font-weight: 300;
+      line-height: 1.75;
+    }
+    .reward-detail-list li { margin-bottom: 0.35rem; }
+    .reward-detail-list li:last-child { margin-bottom: 0; }
+    .reward-detail-foot {
+      font-size: 0.74rem;
+      color: rgba(250,250,250,0.4);
+      font-weight: 400;
+      line-height: 1.55;
+      margin-top: 0.25rem;
+    }
+
+    .final-accept-wrap {
+      width: 100%;
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .final-accept-hint {
+      font-size: 0.72rem;
+      color: rgba(250,250,250,0.38);
+      font-weight: 400;
+      line-height: 1.45;
+      max-width: 22rem;
+      text-align: center;
+    }
+
+    /* ── STEP 7 — ACCEPTANCE / EMAIL ── */
+    .accept-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(34,197,94,0.12);
+      border: 1px solid rgba(34,197,94,0.28);
+      color: #86efac;
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 1.75rem;
+    }
+    .accept-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #86efac;
+    }
+    .accept-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.55rem, 4vw, 2.05rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--cream);
+      line-height: 1.12;
+      margin-bottom: 0.85rem;
+    }
+    .accept-title em {
+      font-style: italic;
+      color: var(--lavender);
+    }
+    .accept-body {
+      font-size: 0.94rem;
+      color: rgba(250,250,250,0.62);
+      font-weight: 300;
+      line-height: 1.75;
+      margin-bottom: 1.35rem;
+      max-width: 26rem;
+    }
+    .accept-email-note {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(165,180,252,0.12);
+      border-radius: 18px;
+      padding: 1.25rem 1.35rem;
+      text-align: left;
+      position: relative;
+    }
+    .accept-email-note::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(165,180,252,0.28), transparent);
+    }
+    .accept-email-note p {
+      font-size: 0.88rem;
+      color: rgba(250,250,250,0.72);
+      line-height: 1.7;
+      font-weight: 300;
+      margin: 0;
+    }
+    .accept-email-note strong {
+      color: var(--lav-soft);
+      font-weight: 600;
+    }
+
+    /* ── BUTTON ── */
+    .btn {
+      background: var(--violet); color: var(--cream);
+      border: none; border-radius: 100px;
+      padding: 0.9rem 2.5rem;
+      font-family: var(--font-body); font-size: 0.95rem; font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(99,102,241,0.4);
+      letter-spacing: -0.01em;
+    }
+    .btn:hover {
+      background: var(--violet-lt);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(99,102,241,0.5);
+    }
+    .btn:active { transform: translateY(0); }
+
+    @media (max-width: 480px) {
+      .pr-grid { grid-template-columns: 1fr; }
+      .pr-grid-row-full .pr-member-card { max-width: 100%; }
+    }
+
+    @media (max-width: 600px) {
+      .stage { padding: 4.5rem 1.25rem 3.5rem; }
+      .final-message { padding: 1.25rem; }
+      .final-cards--triple .final-mini-card {
+        flex: 1 1 calc(50% - 0.43rem);
+        min-width: 5.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg"></div>
+
+  <div class="logo">
+    <span class="logo-text">vms</span><span class="logo-dot"></span>
+  </div>
+
+  <div class="step-dots">
+    <div class="dot active" id="dot-0"></div>
+    <div class="dot" id="dot-1"></div>
+    <div class="dot" id="dot-2"></div>
+    <div class="dot" id="dot-3"></div>
+    <div class="dot" id="dot-4"></div>
+    <div class="dot" id="dot-5"></div>
+    <div class="dot" id="dot-6"></div>
+    <div class="dot" id="dot-7"></div>
+    <div class="dot" id="dot-8"></div>
+  </div>
+
+  <div class="stage">
+
+    <!-- STEP 0: Verification -->
+    <div class="step active" id="step-0">
+      <div class="verify-badge">Founding Member</div>
+      <h1 class="verify-title">Verifying your<br/><em>member status</em></h1>
+      <p class="verify-sub">Hang tight — we're pulling your founding member profile.</p>
+      <div class="progress-wrap">
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <p class="progress-label" id="progressLabel">Connecting to VMS servers...</p>
+      </div>
+      <div class="verified-tag-wrap" id="verifiedWrap">
+        <div class="verified-tag">Member verified — Valeria</div>
+      </div>
+    </div>
+
+    <!-- STEP 1: Random selection from waitlist -->
+    <div class="step" id="step-1">
+      <div class="random-badge">Congratulations! </div>
+      <h1 class="random-title">You've been <em>randomly selected</em></h1>
+      <p class="random-sub">Among everyone on the VMS waitlist, your account was drawn to receive these founding member rewards — not a perk for every signup, just for you.</p>
+      <button class="btn" onclick="goToStep(2)">Continue →</button>
+    </div>
+
+    <!-- STEP 2: Sealed card (same shell as benefits, face-down + frosted) -->
+    <div class="step" id="step-2">
+      <p class="sealed-intro"></p>
+
+      <div class="gift-card sealed-card">
+        <div class="sealed-card-inner">
+          <div class="sealed-ghost" aria-hidden="true"></div>
+          <div class="sealed-back" aria-hidden="true">
+            <div class="sealed-monogram">
+              <span>vms<span class="sealed-mg-dot"></span></span>
+            </div>
+          </div>
+          <div class="sealed-frost">
+            <div class="sealed-chip">A note from the team</div>
+            <p class="sealed-message">Before you start worrying about expenses, enjoy a full <em>pre-paid onboarding session date with a member of our Public Relations department </em> </p>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn" onclick="goToStep(3)">View Reward →</button>
+    </div>
+
+    <!-- STEP 3: Benefit 1 — Dinner -->
+    <div class="step" id="step-3">
+      <div class="benefit-number">Benefit 01 of 03</div>
+
+      <div class="gift-card">
+        <div class="gc-bg"></div>
+        <div class="gc-circle"></div>
+        <div class="gc-circle-2"></div>
+        <div class="gc-inner">
+          <div class="gc-top">
+            <div class="gc-logo">vms<span class="gc-logo-dot"></span></div>
+            <div class="gc-icon">
+              <!-- Wine glass icon -->
+              <svg viewBox="0 0 24 24">
+                <path d="M8 22h8"/>
+                <path d="M12 11v11"/>
+                <path d="M20 2H4l2 7a6 6 0 0 0 12 0l2-7z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="gc-mid">
+            <div class="gc-type">Founding Member Benefit</div>
+            <div class="gc-name">Dinner for Two</div>
+            <div class="gc-desc">Don't worry, We'll handle the details.</div>
+          </div>
+          <div class="gc-bottom">
+            <div>
+              <div class="gc-member-label">Issued to</div>
+              <div class="gc-member-name">Valeria</div>
+            </div>
+            <div class="gc-status">Unlocked</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn" onclick="goToStep(4)">Continue →</button>
+    </div>
+
+    <!-- STEP 4: PR representative picker -->
+    <div class="step step-pr" id="step-4">
+      <div class="pr-team-badge">Public Relations Team</div>
+      <h2 class="pr-picker-title">Choose your PR representative</h2>
+      <p class="pr-picker-sub">Your dedicated member will handle your onboarding personally.</p>
+
+      <div class="pr-grid">
+        <article class="pr-member-card">
+          <div class="pr-card-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <div class="pr-card-top">
+            <div class="pr-avatar" aria-hidden="true">M.R.</div>
+            <div class="pr-card-meta">
+              <div class="pr-card-name">Marcos R.</div>
+              <div class="pr-card-title">Head of Member Relations</div>
+            </div>
+          </div>
+          <div class="pr-card-foot">
+            <span class="pr-available">Available</span>
+            <button type="button" class="pr-select-btn" onclick="selectPRRepresentative(this.closest('.pr-member-card'))">Select</button>
+          </div>
+        </article>
+        <article class="pr-member-card">
+          <div class="pr-card-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <div class="pr-card-top">
+            <div class="pr-avatar" aria-hidden="true">M.R.</div>
+            <div class="pr-card-meta">
+              <div class="pr-card-name">Marcos Rosiles.</div>
+              <div class="pr-card-title">Senior PR Specialist</div>
+            </div>
+          </div>
+          <div class="pr-card-foot">
+            <span class="pr-available">Available</span>
+            <button type="button" class="pr-select-btn" onclick="selectPRRepresentative(this.closest('.pr-member-card'))">Select</button>
+          </div>
+        </article>
+        <div class="pr-grid-row-full">
+          <article class="pr-member-card">
+            <div class="pr-card-check" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
+            <div class="pr-card-top">
+              <div class="pr-avatar" aria-hidden="true">M.R.</div>
+              <div class="pr-card-meta">
+                <div class="pr-card-name">M. Rosiles</div>
+                <div class="pr-card-title">Founding Member Coordinator</div>
+              </div>
+            </div>
+            <div class="pr-card-foot">
+              <span class="pr-available">Available</span>
+              <button type="button" class="pr-select-btn" onclick="selectPRRepresentative(this.closest('.pr-member-card'))">Select</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 5: Benefit 2 — Nails makeover -->
+    <div class="step" id="step-5">
+      <div class="benefit-number">Benefit 02 of 03</div>
+
+      <div class="gift-card">
+        <div class="gc-bg"></div>
+        <div class="gc-circle"></div>
+        <div class="gc-circle-2"></div>
+        <div class="gc-inner">
+          <div class="gc-top">
+            <div class="gc-logo">vms<span class="gc-logo-dot"></span></div>
+            <div class="gc-icon">
+              <!-- Hand / palm icon -->
+              <svg viewBox="0 0 24 24">
+                <path d="M18 11V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2"/>
+                <path d="M14 10V4a2 2 0 0 0-2-2 2 2 0 0 0-2 2v2"/>
+                <path d="M10 10.5V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v8"/>
+                <path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
+              </svg>
+            </div>
+          </div>
+          <div class="gc-mid">
+            <div class="gc-type">Member Benefit</div>
+            <div class="gc-name">Nails Makeover Appointment</div>
+            <div class="gc-desc">Decent hands are a must. Treat yourself, on us.</div>
+          </div>
+          <div class="gc-bottom">
+            <div>
+              <div class="gc-member-label">Issued to</div>
+              <div class="gc-member-name">Valeria</div>
+            </div>
+            <div class="gc-status">Unlocked</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn" onclick="goToStep(6)">Next reward →</button>
+    </div>
+
+    <!-- STEP 6: Benefit 3 — Manicure & pedicure (special event) -->
+    <div class="step" id="step-6">
+      <div class="benefit-number">Benefit 03 of 03</div>
+
+      <div class="gift-card">
+        <div class="gc-bg"></div>
+        <div class="gc-circle"></div>
+        <div class="gc-circle-2"></div>
+        <div class="gc-inner">
+          <div class="gc-top">
+            <div class="gc-logo">vms<span class="gc-logo-dot"></span></div>
+            <div class="gc-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M18 11V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2"/>
+                <path d="M14 10V4a2 2 0 0 0-2-2 2 2 0 0 0-2 2v2"/>
+                <path d="M10 10.5V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v8"/>
+                <path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
+              </svg>
+            </div>
+          </div>
+          <div class="gc-mid">
+            <div class="gc-type">Member benefit</div>
+            <div class="gc-name">Full manicure &amp; pedicure</div>
+            <div class="gc-desc">Just in case you have a special event coming up — hands and feet, fully covered.</div>
+          </div>
+          <div class="gc-bottom">
+            <div>
+              <div class="gc-member-label">Issued to</div>
+              <div class="gc-member-name">Valeria</div>
+            </div>
+            <div class="gc-status">Unlocked</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn" onclick="goToStep(7)">Wrap up →</button>
+    </div>
+
+    <!-- STEP 7: Final -->
+    <div class="step step-final" id="step-7">
+      <div class="final-shell">
+
+        <div class="final-hub" id="finalHub">
+          <h2 class="final-title">That's a wrap,<br/><em>Valeria.</em></h2>
+          <p class="final-cards-hint">Tap a card to open the full reward sheet.</p>
+
+          <div class="final-cards final-cards--triple">
+            <div class="final-mini-card final-mini-card--tap" role="button" tabindex="0" aria-label="View details for Dinner for Two"
+                 onclick="openRewardDetail('dinner')" onkeydown="finalMiniCardKey(event, 'dinner')">
+              <div class="fmc-bg"></div>
+              <div class="fmc-inner">
+                <div class="fmc-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8 22h8"/>
+                    <path d="M12 11v11"/>
+                    <path d="M20 2H4l2 7a6 6 0 0 0 12 0l2-7z"/>
+                  </svg>
+                </div>
+                <div class="fmc-name">Dinner for Two</div>
+                <div class="fmc-tag">Claimed</div>
+              </div>
+              <div class="fmc-chevron" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+              </div>
+            </div>
+            <div class="final-mini-card final-mini-card--tap" role="button" tabindex="0" aria-label="View details for Nails makeover"
+                 onclick="openRewardDetail('nails')" onkeydown="finalMiniCardKey(event, 'nails')">
+              <div class="fmc-bg"></div>
+              <div class="fmc-inner">
+                <div class="fmc-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M18 11V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2"/>
+                    <path d="M14 10V4a2 2 0 0 0-2-2 2 2 0 0 0-2 2v2"/>
+                    <path d="M10 10.5V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v8"/>
+                    <path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
+                  </svg>
+                </div>
+                <div class="fmc-name">Nails makeover</div>
+                <div class="fmc-tag">Claimed</div>
+              </div>
+              <div class="fmc-chevron" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+              </div>
+            </div>
+            <div class="final-mini-card final-mini-card--tap" role="button" tabindex="0" aria-label="View details for manicure and pedicure"
+                 onclick="openRewardDetail('maniped')" onkeydown="finalMiniCardKey(event, 'maniped')">
+              <div class="fmc-bg"></div>
+              <div class="fmc-inner">
+                <div class="fmc-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M18 11V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2"/>
+                    <path d="M14 10V4a2 2 0 0 0-2-2 2 2 0 0 0-2 2v2"/>
+                    <path d="M10 10.5V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v8"/>
+                    <path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
+                  </svg>
+                </div>
+                <div class="fmc-name">Mani &amp; pedi</div>
+                <div class="fmc-tag">Claimed</div>
+              </div>
+              <div class="fmc-chevron" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="final-message">
+            <p>Thank you for choosing VMS.<br/><br/>We're looking forward to seeing you when the app launches. In the meantime, favor de mantener sus finanzas en orden.</p>
+            <div class="sig">— Marcos</div>
+          </div>
+
+          <div class="final-accept-wrap">
+            <button type="button" class="btn" onclick="acceptRewardsContinue()">Accept rewards</button>
+            <p class="final-accept-hint">Confirms you have read your founding rewards. You will receive an email with your appointment details.</p>
+          </div>
+        </div>
+
+        <div class="reward-detail" id="rewardDetailDinner" aria-hidden="true">
+          <button type="button" class="reward-detail-back" onclick="closeRewardDetail()">
+            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+            Back to summary
+          </button>
+          <div class="reward-detail-hero">
+            <div class="reward-detail-icon-wrap" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M8 22h8"/>
+                <path d="M12 11v11"/>
+                <path d="M20 2H4l2 7a6 6 0 0 0 12 0l2-7z"/>
+              </svg>
+            </div>
+            <div class="reward-detail-hero-text">
+              <div class="reward-detail-badge">Founding member benefit</div>
+              <h3 class="reward-detail-title">Dinner for Two</h3>
+            </div>
+          </div>
+          <p class="reward-detail-lead">Pre-paid dinner at a high-end restaurant. Venue, date, and logistics are on us.</p>
+          <div class="reward-detail-panel">
+            <div class="reward-detail-row">
+              <span class="reward-detail-label">Issued to</span>
+              <span class="reward-detail-value">Valeria</span>
+            </div>
+            <div class="reward-detail-row">
+              <span class="reward-detail-label">Status</span>
+              <span class="reward-detail-value reward-detail-value--status">Claimed — active</span>
+            </div>
+            <div class="reward-detail-row">
+              <span class="reward-detail-label">Benefit slot</span>
+              <span class="reward-detail-value">01 of 03</span>
+            </div>
+            <div class="reward-detail-row">
+              <span class="reward-detail-label">Reward reference</span>
+              <span class="reward-detail-value reward-detail-value--mono">VMS-FM-DIN-01</span>
+            </div>
+          </div>
+          <div class="reward-detail-panel">
+            <ul class="reward-detail-list">
+              <li>Reservation coordinated directly with you after confirmation.</li>
+              <li>Valid until redeemed — we will reach out over email with next steps before the app goes live.</li>
+            </ul>
+          </div>
+          <p class="reward-detail-foot">Questions about this reward go through your VMS founding member inbox once messaging opens.</p>
+        </div>
+
+        <div class="reward-detail" id="rewardDetailNails" aria-hidden="true">
+          <button type="button" class="reward-detail-back" onclick="closeRewardDetail()">
+            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+            Back to summary
+          </button>
+          <div class="reward-detail-hero">
+            <div class="reward-detail-icon-wrap" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M18 11V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2"/>
+                <path d="M14 10V4a2 2 0 0 0-2-2 2 2 0 0 0-2 2v2"/>
+                <path d="M10 10.5V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v8"/>
+                <path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
+              </svg>
+            </div>
+            <div class="reward-detail-hero-text">
+              <div class="reward-detail-badge">Member benefit</div>
+              <h3 class="reward-detail-title">Nails makeover appointment</h3>
+            </div>
+          </div>
+          <p class="reward-detail-lead">A little extra — partner salon visit for polish, shaping, and nails care. Small perk for being so fucking pretty.</p>
+          <div class="reward-detail-panel">
+            <div class="reward-detail-row">
+              <span class="reward-detail-label">Issued to</span>
+              <span class="reward-detail-value">Valeria</span>
+            </div>
+            <div class="reward-detail-row">
+              <span class="reward-detail-label">Status</span>
+              <span class="reward-detail-value reward-detail-value--status">Claimed — active</span>
+            </div>
+            <div class="reward-detail-row">
+              <span class="reward-detail-label">Benefit slot</span>
+              <span class="reward-detail-value">02 of 03</span>
+            </div>
+            <div class="reward-detail-row">
+              <span class="reward-detail-label">Reward reference</span>
+              <span class="reward-detail-value reward-detail-value--mono">VMS-FM-NL-02</span>
+            </div>
+          </div>
+          <div class="reward-detail-panel">
+            <ul class="reward-detail-list">
+              <li>Full appointment at a vetted salon in your metro — service level matched to the benefit tier on your card.</li>
+              <li>Scheduling opens with the same post-launch email bundle as your other rewards.</li>
+              <li>If you need to move the date, reply once that thread is live and we will rebook without fees.</li>
+            </ul>
+          </div>
+          <p class="reward-detail-foot">Add-on treatments beyond the covered package may be quoted separately at the salon.</p>
+        </div>
+
+        <div class="reward-detail" id="rewardDetailManiPed" aria-hidden="true">
+          <button type="button" class="reward-detail-back" onclick="closeRewardDetail()">
+            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+            Back to summary
+          </button>
+          <div class="reward-detail-hero">
+            <div class="reward-detail-icon-wrap" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M18 11V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2"/>
+                <path d="M14 10V4a2 2 0 0 0-2-2 2 2 0 0 0-2 2v2"/>
+                <path d="M10 10.5V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v8"/>
+                <path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
+              </svg>
+            </div>
+            <div class="reward-detail-hero-text">
+              <div class="reward-detail-badge">Member benefit</div>
+              <h3 class="reward-detail-title">Full manicure &amp; pedicure</h3>
+            </div>
+          </div>
+          <p class="reward-detail-lead">A second nails reward — for when you have a special event on the calendar and want hands and feet done in one visit.</p>
+          <div class="reward-detail-panel">
+            <div class="reward-detail-row">
+              <span class="reward-detail-label">Issued to</span>
+              <span class="reward-detail-value">Valeria</span>
+            </div>
+            <div class="reward-detail-row">
+              <span class="reward-detail-label">Status</span>
+              <span class="reward-detail-value reward-detail-value--status">Claimed — active</span>
+            </div>
+            <div class="reward-detail-row">
+              <span class="reward-detail-label">Benefit slot</span>
+              <span class="reward-detail-value">03 of 03</span>
+            </div>
+            <div class="reward-detail-row">
+              <span class="reward-detail-label">Reward reference</span>
+              <span class="reward-detail-value reward-detail-value--mono">VMS-FM-NL-03</span>
+            </div>
+          </div>
+          <div class="reward-detail-panel">
+            <ul class="reward-detail-list">
+              <li>Includes shaping, polish, and full pedicure service at the same partner tier as your makeover appointment.</li>
+              <li>Booked as its own session so you can time it close to your event; mention the occasion when you redeem and we will prioritize availability where possible.</li>
+              <li>Same email thread as your other rewards — one reply chain for both nail visits if you want them coordinated.</li>
+            </ul>
+          </div>
+          <p class="reward-detail-foot">This reward is separate from your makeover appointment so you can use each on its own timeline.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- STEP 8: Acceptance — email with appointment details -->
+    <div class="step" id="step-8">
+      <div class="accept-badge">Done!</div>
+      <h2 class="accept-title">You're in, <em>Valeria</em></h2>
+      <p class="accept-body">Your acceptance is saved. You will receive an email with the details of your appointments — dates, locations, and how each founding reward (including your two nail visits) will be scheduled once coordinated.</p>
+      <div class="accept-email-note">
+        <p><strong>What to expect:</strong> the message will summarize your dinner, your nails makeover, and your manicure &amp; pedicure session — redemption references for each, plus the best inbox to reply from if anything needs to change.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const messages = [
+      'Connecting to VMS servers...',
+      'Fetching founding cohort data...',
+      'Verifying member ID...',
+      'Checking benefit eligibility...',
+      'Identity confirmed',
+    ];
+
+    let progress = 0, msgIndex = 0;
+    const fill = document.getElementById('progressFill');
+    const label = document.getElementById('progressLabel');
+    const verifiedWrap = document.getElementById('verifiedWrap');
+
+    const interval = setInterval(() => {
+      progress += 1.4;
+      fill.style.width = Math.min(progress, 100) + '%';
+
+      const newIdx = Math.floor((progress / 100) * (messages.length - 1));
+      if (newIdx !== msgIndex && newIdx < messages.length) {
+        msgIndex = newIdx;
+        label.style.opacity = '0';
+        setTimeout(() => {
+          label.textContent = messages[msgIndex];
+          label.style.transition = 'opacity 0.3s';
+          label.style.opacity = '1';
+        }, 150);
+      }
+
+      if (progress >= 100) {
+        clearInterval(interval);
+        label.textContent = messages[messages.length - 1];
+        setTimeout(() => {
+          verifiedWrap.classList.add('show');
+          setTimeout(() => goToStep(1), 1200);
+        }, 400);
+      }
+    }, 30);
+
+    let prPickCommitted = false;
+    let prAdvanceTimer = null;
+
+    function resetPRPickerState() {
+      prPickCommitted = false;
+      if (prAdvanceTimer) {
+        clearTimeout(prAdvanceTimer);
+        prAdvanceTimer = null;
+      }
+      document.querySelectorAll('#step-4 .pr-member-card').forEach(c => c.classList.remove('pr-member-card--selected'));
+      document.querySelectorAll('#step-4 .pr-select-btn').forEach(b => { b.disabled = false; });
+    }
+
+    function selectPRRepresentative(card) {
+      if (!card || prPickCommitted) return;
+      prPickCommitted = true;
+      document.querySelectorAll('#step-4 .pr-member-card').forEach(c => c.classList.remove('pr-member-card--selected'));
+      card.classList.add('pr-member-card--selected');
+      document.querySelectorAll('#step-4 .pr-select-btn').forEach(b => { b.disabled = true; });
+      prAdvanceTimer = setTimeout(() => {
+        prAdvanceTimer = null;
+        goToStep(5);
+      }, 800);
+    }
+
+    function finalMiniCardKey(ev, which) {
+      if (ev.key === 'Enter' || ev.key === ' ') {
+        ev.preventDefault();
+        openRewardDetail(which);
+      }
+    }
+
+    function openRewardDetail(which) {
+      const hub = document.getElementById('finalHub');
+      const panels = {
+        dinner: document.getElementById('rewardDetailDinner'),
+        nails: document.getElementById('rewardDetailNails'),
+        maniped: document.getElementById('rewardDetailManiPed'),
+      };
+      hub.classList.add('final-hub--hidden');
+      Object.keys(panels).forEach(key => {
+        const el = panels[key];
+        const open = key === which;
+        el.classList.toggle('is-open', open);
+        el.setAttribute('aria-hidden', open ? 'false' : 'true');
+      });
+    }
+
+    function closeRewardDetail() {
+      const hub = document.getElementById('finalHub');
+      hub.classList.remove('final-hub--hidden');
+      document.querySelectorAll('.reward-detail').forEach(el => {
+        el.classList.remove('is-open');
+        el.setAttribute('aria-hidden', 'true');
+      });
+    }
+
+    function acceptRewardsContinue() {
+      goToStep(8);
+    }
+
+    function goToStep(n) {
+      document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
+      document.getElementById('step-' + n).classList.add('active');
+      document.getElementById('dot-' + n).classList.add('active');
+      if (n === 4) resetPRPickerState();
+      if (n === 7) closeRewardDetail();
+      if (n === 8) closeRewardDetail();
+    }
+  </script>
+
+</body>
+</html>
