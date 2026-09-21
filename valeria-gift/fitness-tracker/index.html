@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glute Guide — Adaptada a tu gym</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#141010;
+    --panel:#1d1717;
+    --panel-2:#241d1c;
+    --line:#352b29;
+    --text:#f4efe8;
+    --muted:#a89890;
+    --accent:#ff3d68;
+    --accent-dim:#5c1f2d;
+    --gold:#e7a53d;
+    --green:#5fae7a;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:'Work Sans',sans-serif;}
+  h1,h2,h3,.display{font-family:'Bebas Neue',sans-serif;letter-spacing:0.02em;}
+  a{color:var(--accent);}
+
+  .wrap{max-width:880px;margin:0 auto;padding:28px 18px 90px;}
+
+  /* ---- password gate ---- */
+  #gate{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;}
+  #gate.hidden{display:none;}
+  .gate-box{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:28px 26px;max-width:320px;width:100%;text-align:center;}
+  .gate-box h1{font-size:32px;margin:0 0 4px;}
+  .gate-box p{color:var(--muted);font-size:13px;margin:0 0 18px;}
+  .gate-box input{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--text);padding:10px 12px;border-radius:6px;font-size:15px;margin-bottom:10px;font-family:'Work Sans',sans-serif;}
+  .gate-box input:focus{outline:none;border-color:var(--accent);}
+  .gate-box button{width:100%;background:var(--accent);border:none;color:#1a0a0e;font-weight:700;padding:10px 12px;border-radius:6px;font-size:14px;cursor:pointer;}
+  .gate-error{color:var(--accent);font-size:12.5px;margin-top:8px;min-height:16px;}
+
+  #app{display:none;}
+  #app.visible{display:block;}
+
+  header.top{margin-bottom:22px;}
+  header.top .kicker{color:var(--accent);font-weight:600;font-size:13px;letter-spacing:0.08em;}
+  header.top h1{font-size:56px;line-height:0.95;margin:6px 0 10px;color:var(--text);}
+  header.top h1 span{color:var(--accent);}
+  header.top p{color:var(--muted);font-size:15px;max-width:60ch;margin:0;}
+
+  /* ---- tabs ---- */
+  nav.tabs{display:flex;gap:6px;margin:22px 0;border-bottom:1px solid var(--line);}
+  nav.tabs button{background:none;border:none;color:var(--muted);font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:0.03em;padding:8px 4px;cursor:pointer;border-bottom:2px solid transparent;margin-right:18px;}
+  nav.tabs button:hover{color:var(--text);}
+  nav.tabs button.active{color:var(--accent);border-bottom-color:var(--accent);}
+
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  .sync-status{font-size:11.5px;color:var(--muted);text-align:right;margin:-10px 0 10px;min-height:14px;}
+  .sync-status.err{color:var(--accent);}
+
+  .callout{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:6px;padding:16px 18px;margin:22px 0;}
+  .callout h2{font-size:22px;margin:0 0 8px;color:var(--text);}
+  .callout p.intro{color:var(--muted);font-size:14px;margin:0 0 12px;}
+  .callout ul{margin:0;padding:0;list-style:none;}
+  .callout li{padding:9px 0;border-top:1px solid var(--line);font-size:13.5px;line-height:1.5;}
+  .callout li:first-child{border-top:none;}
+  .callout li b{color:var(--gold);font-weight:600;}
+  .callout li .arrow{color:var(--accent);margin:0 6px;}
+
+  details.callout summary{cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--text);list-style:none;display:flex;align-items:center;justify-content:space-between;}
+  details.callout summary::-webkit-details-marker{display:none;}
+  details.callout summary .chev{font-family:'Work Sans',sans-serif;color:var(--accent);font-size:14px;transition:transform .2s;}
+  details.callout[open] summary .chev{transform:rotate(180deg);}
+
+  .legend{font-size:12px;color:var(--muted);margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line);}
+
+  .activation{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:6px;padding:16px 18px;margin:16px 0 22px;}
+  .activation h2{font-size:22px;margin:0 0 2px;color:var(--text);}
+  .activation .sub{font-size:12.5px;color:var(--gold);font-weight:600;margin-bottom:8px;}
+  .activation p.intro{color:var(--muted);font-size:13.5px;margin:0 0 12px;line-height:1.5;}
+  .activation ol{margin:0;padding:0 0 0 20px;}
+  .activation li{padding:7px 0;font-size:13.5px;line-height:1.5;}
+  .activation li b{color:var(--text);}
+  .activation li .reps{color:var(--gold);font-weight:600;font-size:12.5px;}
+  .activation p.outro{color:var(--muted);font-size:12.5px;margin:10px 0 0;padding-top:10px;border-top:1px dashed var(--line);}
+
+  nav.weeks{display:flex;flex-wrap:wrap;gap:6px;margin:26px 0 18px;}
+  nav.weeks button{background:var(--panel);border:1px solid var(--line);color:var(--muted);font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:0.03em;padding:7px 4px;width:52px;border-radius:5px;cursor:pointer;transition:all .12s;}
+  nav.weeks button:hover{border-color:var(--accent);color:var(--text);}
+  nav.weeks button.active{background:var(--accent);border-color:var(--accent);color:#1a0a0e;}
+
+  .week-head{display:flex;align-items:baseline;gap:10px;margin:10px 0 16px;}
+  .week-head h2{font-size:34px;margin:0;color:var(--text);}
+  .week-head .prog{font-size:13px;color:var(--muted);}
+
+  .day{background:var(--panel);border:1px solid var(--line);border-radius:8px;margin-bottom:18px;overflow:hidden;}
+  .day-head{padding:14px 18px;background:var(--panel-2);display:flex;align-items:center;justify-content:space-between;}
+  .day-head h3{margin:0;font-size:24px;color:var(--text);}
+  .day-head .focus{color:var(--accent);font-size:13px;font-weight:600;text-transform:none;}
+
+  .ex{padding:16px 18px;border-top:1px solid var(--line);}
+  .ex:first-of-type{border-top:none;}
+  .ex-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 10px;margin-bottom:4px;}
+  .ex-title{font-weight:700;font-size:15.5px;color:var(--text);}
+  .badge{font-size:11px;background:var(--accent-dim);color:#ffb9c7;padding:2px 8px;border-radius:20px;font-weight:600;white-space:nowrap;}
+  .cue{color:var(--muted);font-size:13px;line-height:1.5;margin:4px 0 12px;}
+
+  .mv{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;padding:8px 0;border-top:1px dashed var(--line);}
+  .mv:first-of-type{border-top:none;padding-top:2px;}
+  .mv-label{flex:1 1 auto;min-width:160px;font-size:13.5px;color:var(--text);}
+  .mv-sets{font-size:12.5px;color:var(--muted);background:var(--panel-2);padding:2px 8px;border-radius:4px;white-space:nowrap;}
+  .slots{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+  .slot{display:flex;flex-direction:column;align-items:center;gap:2px;}
+  .slot label{font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;}
+  .slot input{width:56px;background:var(--bg);border:1px solid var(--line);color:var(--gold);font-weight:600;text-align:center;border-radius:4px;padding:5px 2px;font-size:13px;font-family:'Work Sans',sans-serif;}
+  .slot input:focus{outline:none;border-color:var(--accent);}
+  .slot input::placeholder{color:#5a5250;font-weight:400;}
+  .slot input.is-pr{border-color:var(--gold);color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset;}
+  .pr-flag{font-size:10px;color:var(--gold);font-weight:700;white-space:nowrap;}
+
+  .saved-tick{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-left:4px;opacity:0;transition:opacity .3s;}
+  .saved-tick.show{opacity:1;}
+
+  /* ---- progress / metrics tabs ---- */
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin-bottom:18px;}
+  .card h2{font-size:26px;margin:0 0 12px;}
+  select, .card input{background:var(--bg);border:1px solid var(--line);color:var(--text);padding:8px 10px;border-radius:6px;font-size:13.5px;font-family:'Work Sans',sans-serif;}
+  select:focus, .card input:focus{outline:none;border-color:var(--accent);}
+  .field-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;}
+  .field{display:flex;flex-direction:column;gap:4px;}
+  .field label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;}
+  .btn{background:var(--accent);border:none;color:#1a0a0e;font-weight:700;padding:9px 16px;border-radius:6px;font-size:13.5px;cursor:pointer;align-self:flex-end;}
+  .btn:hover{opacity:0.92;}
+  canvas{max-width:100%;}
+  .pr-list{margin:0;padding:0;list-style:none;}
+  .pr-list li{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:13.5px;}
+  .pr-list li:first-child{border-top:none;}
+  .pr-list .pr-val{color:var(--gold);font-weight:700;white-space:nowrap;}
+  .pr-list .pr-meta{color:var(--muted);font-size:11.5px;}
+  .empty-note{color:var(--muted);font-size:13px;padding:10px 0;}
+  table.metrics-table{width:100%;border-collapse:collapse;font-size:13px;}
+  table.metrics-table th, table.metrics-table td{text-align:left;padding:7px 6px;border-top:1px solid var(--line);}
+  table.metrics-table th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.03em;}
+
+  footer{margin-top:40px;text-align:center;color:var(--muted);font-size:12.5px;}
+  footer button{background:none;border:1px solid var(--line);color:var(--muted);padding:8px 14px;border-radius:5px;font-family:'Work Sans',sans-serif;font-size:12.5px;cursor:pointer;}
+  footer button:hover{border-color:var(--accent);color:var(--accent);}
+
+  @media (max-width:520px){
+    header.top h1{font-size:42px;}
+    .week-head h2{font-size:28px;}
+    .slot input{width:48px;}
+  }
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gate-box">
+    <h1>Glute <span style="color:var(--accent)">Guide</span></h1>
+    <p>Acceso privado</p>
+    <input type="password" id="gatePw" placeholder="Contraseña" autofocus>
+    <button id="gateBtn">Entrar</button>
+    <div class="gate-error" id="gateError"></div>
+  </div>
+</div>
+
+<div id="app">
+<div class="wrap">
+
+  <header class="top">
+    <div class="kicker">2 DÍAS POR SEMANA · 12 SEMANAS</div>
+    <h1>The Glute <span>Guide</span></h1>
+    <p>La rutina de Mady, adaptada ejercicio por ejercicio a las máquinas de tu gym. El programa original ya está pensado para entrenar pierna/glúteo 2 veces por semana (Día 1 y Día 2), así que la estructura de semanas y días se mantiene igual — lo único que cambia es cómo ejecutas cada movimiento.</p>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button data-tab="rutina" class="active">Rutina</button>
+    <button data-tab="progreso">Progreso</button>
+    <button data-tab="medidas">Medidas</button>
+  </nav>
+
+  <div class="sync-status" id="syncStatus"></div>
+
+  <!-- ===== RUTINA ===== -->
+  <div class="panel active" id="panel-rutina">
+
+    <details class="callout" id="subsBox">
+      <summary>Qué se adaptó y por qué <span class="chev">▾</span></summary>
+      <p class="intro" id="subsIntro"></p>
+      <ul id="subsList"></ul>
+      <p class="legend" id="legendText"></p>
+    </details>
+
+    <div class="activation" id="activationBox">
+      <h2 id="actTitle"></h2>
+      <div class="sub" id="actSub"></div>
+      <p class="intro" id="actIntro"></p>
+      <ol id="actSteps"></ol>
+      <p class="outro" id="actOutro"></p>
+    </div>
+
+    <nav class="weeks" id="weekNav"></nav>
+
+    <div id="weekContent"></div>
+  </div>
+
+  <!-- ===== PROGRESO ===== -->
+  <div class="panel" id="panel-progreso">
+    <div class="card">
+      <h2>Récords personales</h2>
+      <ul class="pr-list" id="prList"></ul>
+      <p class="empty-note" id="prEmpty" style="display:none;">Todavía no has registrado ningún peso.</p>
+    </div>
+    <div class="card">
+      <h2>Progreso por ejercicio</h2>
+      <div class="field-row">
+        <div class="field">
+          <label>Movimiento</label>
+          <select id="progressSelect"></select>
+        </div>
+      </div>
+      <canvas id="progressChart" height="220"></canvas>
+      <p class="empty-note" id="progressEmpty" style="display:none;">Sin datos todavía para este movimiento.</p>
+    </div>
+  </div>
+
+  <!-- ===== MEDIDAS ===== -->
+  <div class="panel" id="panel-medidas">
+    <div class="card">
+      <h2>Registrar medidas</h2>
+      <div class="field-row">
+        <div class="field">
+          <label>Fecha</label>
+          <input type="date" id="mDate">
+        </div>
+        <div class="field">
+          <label>Peso (kg/lb)</label>
+          <input type="text" inputmode="decimal" id="mWeight" placeholder="—">
+        </div>
+        <div class="field">
+          <label>Cintura</label>
+          <input type="text" inputmode="decimal" id="mWaist" placeholder="—">
+        </div>
+        <div class="field">
+          <label>Cadera</label>
+          <input type="text" inputmode="decimal" id="mHip" placeholder="—">
+        </div>
+        <div class="field">
+          <label>Muslo</label>
+          <input type="text" inputmode="decimal" id="mThigh" placeholder="—">
+        </div>
+        <button class="btn" id="mSaveBtn">Guardar</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Peso corporal</h2>
+      <canvas id="weightChart" height="220"></canvas>
+      <p class="empty-note" id="weightEmpty" style="display:none;">Sin medidas registradas todavía.</p>
+    </div>
+
+    <div class="card">
+      <h2>Historial</h2>
+      <table class="metrics-table" id="metricsTable">
+        <thead>
+          <tr><th>Fecha</th><th>Peso</th><th>Cintura</th><th>Cadera</th><th>Muslo</th></tr>
+        </thead>
+        <tbody id="metricsTbody"></tbody>
+      </table>
+      <p class="empty-note" id="metricsEmpty" style="display:none;">Sin medidas registradas todavía.</p>
+    </div>
+  </div>
+
+  <footer>
+    Tus pesos se guardan en Supabase, ligados a este sitio. Si borras el navegador o cambias de dispositivo, los datos siguen ahí.
+    <br><br>
+    <button id="logoutBtn">Cerrar sesión</button>
+  </footer>
+
+</div>
+</div>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+
+<script>
+// Datos de la rutina, adaptados de "The Glute Guide by Mady" a las máquinas
+// disponibles en el gym de la usuaria. Los textos de ejercicios (cues) están
+// re-escritos en palabras propias, no copiados del PDF original.
+
+const SUBS = {
+  title: "Cómo se adaptó cada máquina",
+  intro: "Con Smith Machine, bandas, banco de hiperextensión, máquina de hip abduction y máquina de pantorrilla, tu gym ya cubre casi todo el equipo original. Lo único que de verdad no tienes es el landmine, y ahí van un par de notas más sobre squats:",
+  items: [
+    { from: "Landmine (para el Romanian Deadlift)", to: "Se sustituye por Romanian Deadlift regular con barra libre, o RDL a una pierna con mancuerna — el patrón de movimiento es prácticamente el mismo." },
+    { from: "Full Squat / Front Squat / Zercher Squat", to: "La guía original los hace con barra libre, con Smith Machine como opción para agarrar confianza al inicio. Ya tienes las dos — usa la que prefieras. Pendulum Squat y Hack Squat también son válidos si un día la barra libre o la Smith están ocupadas." },
+    { from: "Kickback en cable / Smith Machine", to: "Coincide directo con tu máquina de kickbacks en polea, sin cambios." },
+    { from: "Hip Thrust y Cable Hip Thrust con barra + banda", to: "Tu máquina de Hip Thrust hace exactamente este movimiento sin necesitar banda ni acolchado en la cadera — de hecho es un upgrade sobre el original." },
+  ],
+};
+
+const LEGEND = "BL = Barra libre · MC = Mancuernas · HT = Hip Thrust machine · PS = Pendulum Squat · HS = Hack Squat · PR = Prensa/Leg Press · LC = Leg Curl (horizontal o sentado) · LE = Leg Extension · KB = Kickback en polea";
+
+const ACTIVATION = {
+  title: "Activación de glúteos con bandas",
+  subtitle: "Antes de pesas, en Día 1 y Día 2",
+  intro: "Este es tu calentamiento real — despierta el glúteo antes de cargar peso. Sin descansos entre ejercicios (o descansos muy breves si necesitas), 2 rondas seguidas.",
+  steps: [
+    { name: "Caminando en squat", reps: "20 reps", note: "Banda arriba de las rodillas. Baja en posición de squat y camina de lado a lado sin subir el torso." },
+    { name: "Donkey Kicks", reps: "15 reps c/pierna", note: "Con la rodilla en el piso tensando la banda, extiende la otra pierna hacia atrás. Gira la rodilla que patea levemente hacia afuera para más tensión en el glúteo." },
+    { name: "Elevación lateral de pierna a 90°", reps: "10 reps c/pierna", note: "Banda a la altura de los tobillos. Sube la pierna hasta que quede paralela al piso — si la banda no te deja llegar tan alto, no hay problema." },
+    { name: "Glute Bridges", reps: "10 reps", note: "Aprieta el glúteo arriba y separa las rodillas ahí mismo para aumentar la tensión de la banda." },
+  ],
+  outro: "Repite las 4 completas por 2 rondas, seguidas, como un circuito.",
+};
+
+// Cada ejercicio: { title, adapted, cue, movements:[{label, sets, adapted, slots}] }
+// slots = cuántas casillas de peso mostrar (1 para sets rectos, N para piramidales)
+
+const WEEKS = [
+{
+  n:1,
+  days:[
+    { d:1, focus:"Glúteos y femorales", exercises:[
+      { title:"Squat-stance Deadlift", adapted:"BL — igual", cue:"Piernas a la anchura de tu squat, espalda recta, la barra pegada a las piernas al bajar.",
+        movements:[{label:"Squat-stance Deadlift", sets:"4×12", slots:1}] },
+      { title:"Hip Thrust", adapted:"HT — sin banda ni barra", cue:"Aprieta glúteo arriba 1-2 seg, empuja con los talones, barbilla hacia adelante.",
+        movements:[{label:"Hip Thrust", sets:"4×15", slots:1}] },
+      { title:"Superset: RDL a una pierna + Goblet Squat", adapted:"MC ambos", cue:"RDL: rodilla casi recta, usa tu mano libre de apoyo. Goblet: mancuerna pegada al pecho, con banda de resistencia.",
+        movements:[
+          {label:"RDL a una pierna (c/pierna)", sets:"4×12", slots:1},
+          {label:"Goblet Squat", sets:"4×10", slots:1},
+        ]},
+      { title:"Hip Abduction", adapted:"Hip Abduction machine", cue:"Tronco inclinado hacia adelante, jala el tobillo hacia el lado, no hacia atrás.",
+        movements:[{label:"Hip Abduction (máquina)", sets:"4×20", slots:1}] },
+      { title:"Burnout: Glute Bridges con mancuerna pesada", adapted:"Piso + MC (drop set)", cue:"Mancuerna pesada hasta el fallo, cambia a una más ligera, termina con peso corporal — todo sin parar, es 1 solo set.",
+        movements:[{label:"Glute Bridge drop set (×3)", sets:"hasta el fallo ×3", slots:1}] },
+    ]},
+    { d:2, focus:"Glúteos y cuádriceps", exercises:[
+      { title:"Full Squat", adapted:"BL, o Smith Machine si prefieres más soporte", cue:"Pies abiertos tipo sumo para más activación de glúteo.",
+        movements:[{label:"Pendulum/Hack Squat", sets:"4×10", slots:1}] },
+      { title:"Glute Bridge", adapted:"Piso + MC", cue:"Detente 1 seg arriba apretando, empuja con talones.",
+        movements:[{label:"Glute Bridge", sets:"4×15", slots:1}] },
+      { title:"Bulgarian Split Squat", adapted:"MC — sujétate de algo para balance", cue:"Peso en el talón de adelante, torso ligeramente inclinado hacia adelante.",
+        movements:[{label:"Bulgarian Split Squat (c/pierna)", sets:"3×12", slots:1}] },
+      { title:"Superset: Leg Press + caminando en squat", adapted:"PR + caminando en squat con banda", cue:"Pies más abiertos que tu cadera en la prensa.",
+        movements:[
+          {label:"Leg Press", sets:"3×15", slots:1},
+          {label:"Caminando en squat", sets:"3×20 pasos", slots:1},
+        ]},
+      { title:"Hyperextension", adapted:"Banco de hiperextensión", cue:"Aprieta glúteo todo el movimiento, sobre todo al subir.",
+        movements:[{label:"Hyperextension (banco) — ambas piernas", sets:"4×15", slots:1},{label:"Hyperextension (banco) — una pierna, c/lado", sets:"5×1", slots:1}] },
+    ]},
+  ]
+},
+{
+  n:2,
+  days:[
+    { d:1, focus:"Glúteos y femorales", exercises:[
+      { title:"Sumo Deadlift", adapted:"BL — igual", cue:"Pies apuntando hacia afuera, rodillas siguen la dirección de los pies.",
+        movements:[{label:"Sumo Deadlift", sets:"4×12", slots:1}] },
+      { title:"Hip Thrusts", adapted:"HT", cue:"Sube el peso vs. la semana pasada — ahora son 10 reps en vez de 15.",
+        movements:[{label:"Hip Thrust", sets:"4×10", slots:1}] },
+      { title:"Landmine RDL", adapted:"BL — RDL regular (sin landmine)", cue:"Casi sin doblar rodillas, controla la bajada.",
+        movements:[{label:"Romanian Deadlift", sets:"3×20", slots:1}] },
+      { title:"Cable Hip Abduction", adapted:"Hip Abduction machine", cue:"Una pierna, luego la otra, 45 seg de descanso entre sets.",
+        movements:[{label:"Hip Abduction (c/pierna)", sets:"4×15", slots:1}] },
+      { title:"Pantorrilla", adapted:"Máquina de pantorrilla", cue:"Sube lo más que puedas en las puntas, controla la bajada.",
+        movements:[{label:"Elevación de pantorrilla", sets:"4×15", slots:1}] },
+    ]},
+    { d:2, focus:"Glúteos y cuádriceps", exercises:[
+      { title:"Full Squat", adapted:"BL, o Smith Machine si prefieres más soporte", cue:"Mismas 10 reps que la semana pasada, sube peso solo si te sobran reps.",
+        movements:[{label:"Pendulum/Hack Squat", sets:"4×10", slots:1}] },
+      { title:"Superset: Hip Thrusts + Reverse Hyperextension", adapted:"HT + Banco de hiperextensión", cue:"Sube 5-10 lb de la semana pasada si puedes en Hip Thrust.",
+        movements:[
+          {label:"Hip Thrust", sets:"4×10", slots:1},
+          {label:"Reverse Hyperextension (banco) + banda", sets:"4×10", slots:1},
+        ]},
+      { title:"Bulgarian Split Squats en Smith", adapted:"Smith Machine — igual", cue:"Empuja con el talón, torso ligeramente adelante.",
+        movements:[{label:"Bulgarian Split Squat (c/pierna)", sets:"3×12", slots:1}] },
+      { title:"Kickback con Cables", adapted:"KB — coincide directo", cue:"Gira la rodilla levemente hacia afuera al patear, no vayas totalmente recto.",
+        movements:[{label:"Kickback en polea (c/pierna)", sets:"3×20", slots:1}] },
+      { title:"Burnout: Hip Abduction drop set", adapted:"Hip Abduction machine (drop set)", cue:"Al terminar el 4to set baja el peso y sigue sin descanso, dos veces más.",
+        movements:[{label:"Hip Abduction drop set", sets:"4×20 + drop", slots:1}] },
+    ]},
+  ]
+},
+{
+  n:3,
+  days:[
+    { d:1, focus:"Glúteos y femorales", exercises:[
+      { title:"Romanian Deadlift", adapted:"BL", cue:"La barra baja hasta la espinilla, casi sin doblar rodilla.",
+        movements:[{label:"Romanian Deadlift", sets:"1×15 · 1×12 · 1×10 · 1×8", slots:4}] },
+      { title:"Hip Thrust", adapted:"HT", cue:"Sube el peso en cada set.",
+        movements:[{label:"Hip Thrust", sets:"1×15 · 1×12 · 1×10 · 1×8", slots:4}] },
+      { title:"Smith Machine Kick Back", adapted:"KB — coincide directo", cue:"Una pierna a la vez, 12 reps cada lado.",
+        movements:[{label:"Kickback en polea (c/pierna)", sets:"3×12", slots:1}] },
+      { title:"B-Stance Deadlift", adapted:"BL o MC", cue:"El pie de atrás solo da equilibrio, el peso va en el pie de adelante.",
+        movements:[{label:"B-Stance Deadlift (c/pierna)", sets:"3×15", slots:1}] },
+      { title:"Superset: Hyperextension + Goblet Squats", adapted:"Banco de hiperextensión + MC + banda", cue:"Baja lo más que puedas en el goblet squat.",
+        movements:[
+          {label:"Hyperextension (banco)", sets:"4×15", slots:1},
+          {label:"Goblet Squat", sets:"4×10", slots:1},
+        ]},
+    ]},
+    { d:2, focus:"Glúteos y cuádriceps", exercises:[
+      { title:"Full Squat", adapted:"BL, o Smith Machine si prefieres más soporte", cue:"Si te salen 11+ reps limpias en el primer set, sube peso.",
+        movements:[{label:"Pendulum/Hack Squat", sets:"4×10", slots:1}] },
+      { title:"Superset: Hip Thrusts + Hip Abduction", adapted:"HT + Hip Abduction machine", cue:"Los 40 de abducción van rápido, justo después del Hip Thrust.",
+        movements:[
+          {label:"Hip Thrust", sets:"1×15 · 1×12 · 1×10 · 1×8", slots:4},
+          {label:"Hip Abduction (máquina)", sets:"40 reps c/set", slots:1},
+        ]},
+      { title:"Leg Press de una pierna", adapted:"PR a una pierna", cue:"Empuja con el talón para más activación de glúteo.",
+        movements:[{label:"Leg Press (c/pierna)", sets:"4×20", slots:1}] },
+      { title:"Pantorrilla", adapted:"Máquina de pantorrilla", cue:"Controla la bajada.",
+        movements:[{label:"Elevación de pantorrilla", sets:"4×15", slots:1}] },
+      { title:"Burnout: Frog Pump + Hip Abduction", adapted:"Piso + MC, luego Hip Abduction machine", cue:"Frog pump con mancuerna, luego sin mancuerna, luego abducción — todo seguido, 45 seg entre sets.",
+        movements:[
+          {label:"Frog Pump c/mancuerna", sets:"3×20", slots:1},
+          {label:"Frog Pump peso corporal", sets:"3×20", slots:1},
+          {label:"Hip Abduction (máquina)", sets:"3×40", slots:1},
+        ]},
+    ]},
+  ]
+},
+{
+  n:4,
+  days:[
+    { d:1, focus:"Glúteos y femorales", exercises:[
+      { title:"Squat-stance Deadlift", adapted:"BL", cue:"Piernas anchas tipo squat, barra pegada a las piernas.",
+        movements:[{label:"Squat-stance Deadlift", sets:"4×12", slots:1}] },
+      { title:"Superset: Hip Thrusts + Reverse Hyperextension", adapted:"HT + Banco de hiperextensión", cue:"Separa rodillas al subir para más tensión en glúteo.",
+        movements:[
+          {label:"Hip Thrust", sets:"1×15 · 1×12 · 1×10 · 1×8", slots:4},
+          {label:"Reverse Hyperextension (banco) + banda", sets:"10 reps c/set", slots:1},
+        ]},
+      { title:"Leg Curl", adapted:"LC horizontal o sentado", cue:"Peso retador para 20 reps.",
+        movements:[{label:"Leg Curl", sets:"3×20", slots:1}] },
+      { title:"Superset: High Step-Up + Glute Bridges", adapted:"MC + Piso/MC + banda", cue:"10 reps c/pierna en step-up, luego al piso a hacer glute bridges con mancuerna.",
+        movements:[
+          {label:"Step-Up (c/pierna)", sets:"3×10", slots:1},
+          {label:"Glute Bridge c/mancuerna", sets:"3×20", slots:1},
+        ]},
+      { title:"Cable Hip Thrust", adapted:"HT", cue:"45 seg de descanso entre sets.",
+        movements:[{label:"Hip Thrust", sets:"3×30", slots:1}] },
+    ]},
+    { d:2, focus:"Glúteos y cuádriceps", exercises:[
+      { title:"Front Squats", adapted:"BL (front rack) o Goblet pesado con MC", cue:"Espalda muy derecha, no dejes caer los brazos, baja el peso vs. tu squat normal.",
+        movements:[{label:"Front Squat / Goblet pesado", sets:"4×10", slots:1}] },
+      { title:"Hip Thrusts (tempo daño muscular)", adapted:"HT", cue:"Sube en 1 seg, baja lento en 4 seg.",
+        movements:[{label:"Hip Thrust tempo 4/0/1/0", sets:"2×12 · 1×10 · 1×8", slots:4}] },
+      { title:"Static Lunges en Smith", adapted:"Smith Machine — igual", cue:"No llegues completamente arriba entre reps, mantén tensión.",
+        movements:[{label:"Static Lunge (c/pierna)", sets:"3×15", slots:1}] },
+      { title:"Superset: Goblet Squats (tempo) + Glute Bridge", adapted:"MC + banda, Piso/MC + banda", cue:"Baja 4 seg, aguanta 3 seg abajo, sube en 1 seg.",
+        movements:[
+          {label:"Goblet Squat tempo 4/3/1/0", sets:"3×10", slots:1},
+          {label:"Glute Bridge c/mancuerna", sets:"3×15", slots:1},
+        ]},
+      { title:"Hyperextension", adapted:"GP", cue:"Aprieta glúteo todo el tiempo, más al subir.",
+        movements:[{label:"Hyperextension (banco) — ambas piernas", sets:"4×15", slots:1},{label:"Hyperextension (banco) — una pierna, c/lado", sets:"5×1", slots:1}] },
+    ]},
+  ]
+},
+{
+  n:5,
+  days:[
+    { d:1, focus:"Glúteos y femorales", exercises:[
+      { title:"Sumo Deadlift", adapted:"BL", cue:"Si ya haces 13+ reps limpias, sube peso.",
+        movements:[{label:"Sumo Deadlift", sets:"4×12", slots:1}] },
+      { title:"Superset: Hip Thrusts + Hip Abduction", adapted:"HT + Hip Abduction machine", cue:"40 reps de abducción rápidas justo después del Hip Thrust.",
+        movements:[
+          {label:"Hip Thrust", sets:"1×15 · 1×12 · 1×10", slots:3},
+          {label:"Hip Abduction (máquina)", sets:"40 reps c/set", slots:1},
+        ]},
+      { title:"B-Stance Hip Thrusts", adapted:"HT a una pierna, o MC en piso", cue:"Menos peso que el Hip Thrust normal, un glúteo a la vez.",
+        movements:[{label:"B-Stance Hip Thrust (c/pierna)", sets:"2×15", slots:1}] },
+      { title:"Good Mornings en Smith", adapted:"Smith Machine — igual", cue:"Espalda derecha, piernas levemente abiertas, aprieta glúteo.",
+        movements:[{label:"Good Mornings", sets:"3×15", slots:1}] },
+      { title:"Cable Hip Abduction + Sumo Squat", adapted:"Hip Abduction machine + BL/PS", cue:"Después de cada abducción, baja en squat sumo.",
+        movements:[
+          {label:"Hip Abduction (c/pierna)", sets:"3×15", slots:1},
+          {label:"Sumo Squat", sets:"incluido en cada rep", slots:1},
+        ]},
+    ]},
+    { d:2, focus:"Glúteos y cuádriceps", exercises:[
+      { title:"Full Squat", adapted:"BL, o Smith Machine si prefieres más soporte", cue:"11+ reps limpias en el primer set = sube peso.",
+        movements:[{label:"Pendulum/Hack Squat", sets:"4×10", slots:1}] },
+      { title:"Superset: Hip Thrusts + Reverse Hyperextension", adapted:"HT + Banco de hiperextensión", cue:"Aumenta peso de Hip Thrust entre sets.",
+        movements:[
+          {label:"Hip Thrust", sets:"1×15 · 1×12 · 1×10 · 1×8", slots:4},
+          {label:"Reverse Hyperextension (banco) + banda", sets:"10 reps c/set", slots:1},
+        ]},
+      { title:"Bulgarian Split Squats con pulso en Smith", adapted:"Smith Machine — igual", cue:"Abajo, sube poquito, baja poquito, luego sube completo.",
+        movements:[{label:"Bulgarian Split Squat con pulso (c/pierna)", sets:"3×12", slots:1}] },
+      { title:"Leg Extension", adapted:"LE", cue:"Peso retador para 20 reps.",
+        movements:[{label:"Leg Extension", sets:"3×20", slots:1}] },
+      { title:"Burnout: Hip Abduction Drop Set", adapted:"Hip Abduction machine (drop set)", cue:"45 seg entre sets, luego drop set al final.",
+        movements:[{label:"Hip Abduction drop set", sets:"4×20 + drop", slots:1}] },
+      { title:"Pantorrilla", adapted:"Máquina de pantorrilla", cue:"Controla la bajada.",
+        movements:[{label:"Elevación de pantorrilla", sets:"4×15", slots:1}] },
+    ]},
+  ]
+},
+{
+  n:6,
+  days:[
+    { d:1, focus:"Glúteos y femorales", exercises:[
+      { title:"Squat-stance Deadlift", adapted:"BL", cue:"Piernas anchas tipo squat, barra pegada a las piernas.",
+        movements:[{label:"Squat-stance Deadlift", sets:"4×12", slots:1}] },
+      { title:"Superset: Hip Thrusts + Reverse Hyperextension", adapted:"HT + Banco de hiperextensión", cue:"Separa rodillas al subir para más tensión en glúteo.",
+        movements:[
+          {label:"Hip Thrust", sets:"1×15 · 1×12 · 1×10 · 1×8", slots:4},
+          {label:"Reverse Hyperextension (banco) + banda", sets:"10 reps c/set", slots:1},
+        ]},
+      { title:"Landmine RDL", adapted:"BL — RDL regular (sin landmine)", cue:"Casi sin doblar rodillas.",
+        movements:[{label:"Romanian Deadlift", sets:"3×20", slots:1}] },
+      { title:"Curtsey Lunge + Sumo Squat", adapted:"MC", cue:"Curtsey izquierda, sumo squat con pulso, curtsey derecha, sumo squat con pulso — eso es 1 rep.",
+        movements:[{label:"Curtsey + Sumo Squat (combo)", sets:"3×15", slots:1}] },
+      { title:"Superset: Hyperextension + Hip Abduction", adapted:"Banco de hiperextensión + Hip Abduction machine", cue:"Aprieta glúteo todo el tiempo, más al subir.",
+        movements:[
+          {label:"Hyperextension (banco)", sets:"4×15", slots:1},
+          {label:"Hip Abduction (máquina)", sets:"4×30", slots:1},
+        ]},
+    ]},
+    { d:2, focus:"Glúteos y cuádriceps", exercises:[
+      { title:"Full Squats", adapted:"BL, o Smith Machine si prefieres más soporte", cue:"13+ reps limpias en el primer set = sube peso.",
+        movements:[{label:"Pendulum/Hack Squat", sets:"1×12 · 1×10 · 1×8 · 1×6", slots:4}] },
+      { title:"Superset: Hip Thrusts + Reverse Hyperextension", adapted:"HT + Banco de hiperextensión", cue:"Aumenta peso de Hip Thrust entre sets.",
+        movements:[
+          {label:"Hip Thrust", sets:"1×15 · 1×12 · 1×10 · 1×8", slots:4},
+          {label:"Reverse Hyperextension (banco) + banda", sets:"10 reps c/set", slots:1},
+        ]},
+      { title:"Lunge + Step up en Smith", adapted:"Smith Machine — igual", cue:"12 reps una pierna, luego 12 la otra.",
+        movements:[{label:"Lunge + Step-up (c/pierna)", sets:"3×12", slots:1}] },
+      { title:"Reverse Hyperextension en Smith", adapted:"GP", cue:"Mismo patrón de extensión de cadera.",
+        movements:[{label:"Reverse Hyperextension (banco)", sets:"3×20", slots:1}] },
+      { title:"Superset: Hip Thrusts (1 pierna) + Hip Abduction tumbada", adapted:"HT con MC + bodyweight + banda", cue:"Solo con una mancuerna, 10 reps c/pierna.",
+        movements:[
+          {label:"Hip Thrust 1 pierna c/mancuerna (c/pierna)", sets:"4×10", slots:1},
+          {label:"Hip Abduction tumbada (c/pierna)", sets:"4×10", slots:1},
+        ]},
+    ]},
+  ]
+},
+{
+  n:7,
+  days:[
+    { d:1, focus:"Glúteos y femorales", exercises:[
+      { title:"Hip Thrusts", adapted:"HT", cue:"Hoy va primero para tener más energía — intenta hacer récord de peso.",
+        movements:[{label:"Hip Thrust", sets:"1×15 · 1×12 · 1×10 · 1×8 · 1×6", slots:5}] },
+      { title:"Squat-stance Deadlift", adapted:"BL", cue:"Piernas anchas tipo squat.",
+        movements:[{label:"Squat-stance Deadlift", sets:"1×12 · 1×10 · 1×8 · 1×6", slots:4}] },
+      { title:"Leg Curl", adapted:"LC horizontal o sentado", cue:"Peso retador para 15 reps.",
+        movements:[{label:"Leg Curl", sets:"3×15", slots:1}] },
+      { title:"Hip Abduction Standing + Squat con pulso", adapted:"Hip Abduction machine + banda + MC", cue:"Separa una pierna, regresa, squat con pulso, luego la otra pierna.",
+        movements:[{label:"Hip Abduction + Squat con pulso (combo)", sets:"3×20", slots:1}] },
+      { title:"Cable Hip Thrust", adapted:"HT", cue:"45 seg de descanso entre sets.",
+        movements:[{label:"Hip Thrust", sets:"3×30", slots:1}] },
+    ]},
+    { d:2, focus:"Glúteos y cuádriceps", exercises:[
+      { title:"Front Squats", adapted:"BL o Goblet pesado con MC", cue:"Espalda muy derecha, baja el peso vs. tu squat normal.",
+        movements:[{label:"Front Squat / Goblet pesado", sets:"4×10", slots:1}] },
+      { title:"Superset: Hip Thrusts en Smith + Hip Abduction", adapted:"HT, o en Smith Machine + Hip Abduction machine", cue:"40 reps de abducción rápidas después de cada Hip Thrust.",
+        movements:[
+          {label:"Hip Thrust", sets:"1×15 · 1×12 · 1×10 · 1×8", slots:4},
+          {label:"Hip Abduction (máquina)", sets:"40 reps c/set", slots:1},
+        ]},
+      { title:"Static Lunges en Smith", adapted:"Smith Machine — igual", cue:"No llegues completamente arriba entre reps.",
+        movements:[{label:"Static Lunge (c/pierna)", sets:"3×15", slots:1}] },
+      { title:"Superset: Goblet Squats (tempo) + Glute Bridge", adapted:"MC + banda, Piso/MC + banda", cue:"Tempo 4/3/1/0 en el goblet squat.",
+        movements:[
+          {label:"Goblet Squat tempo", sets:"2×10", slots:1},
+          {label:"Glute Bridge c/mancuerna", sets:"2×15", slots:1},
+        ]},
+      { title:"Pantorrilla", adapted:"Máquina de pantorrilla", cue:"Controla la bajada.",
+        movements:[{label:"Elevación de pantorrilla", sets:"4×15", slots:1}] },
+    ]},
+  ]
+},
+{
+  n:8,
+  days:[
+    { d:1, focus:"Glúteos y femorales", exercises:[
+      { title:"Sumo Deadlift", adapted:"BL", cue:"Pies apuntando hacia afuera, rodillas siguen la misma dirección.",
+        movements:[{label:"Sumo Deadlift", sets:"1×12 · 1×10 · 1×8 · 1×6", slots:4}] },
+      { title:"Superset: Hip Thrusts + Reverse Hyperextension", adapted:"HT + Banco de hiperextensión", cue:"Aumenta peso de Hip Thrust entre sets.",
+        movements:[
+          {label:"Hip Thrust", sets:"1×15 · 1×12 · 1×10 · 1×8", slots:4},
+          {label:"Reverse Hyperextension (banco) + banda", sets:"10 reps c/set", slots:1},
+        ]},
+      { title:"Leg Press", adapted:"PR", cue:"—",
+        movements:[{label:"Leg Press", sets:"3×20", slots:1}] },
+      { title:"Superset: Goblet Squat + Frog Pump + Hip Abduction", adapted:"MC + Piso/MC + Hip Abduction machine", cue:"Los tres seguidos, 45 seg de descanso entre sets completos.",
+        movements:[
+          {label:"Goblet Squat", sets:"3×10", slots:1},
+          {label:"Frog Pump c/mancuerna", sets:"3×20", slots:1},
+          {label:"Hip Abduction (máquina)", sets:"3×30", slots:1},
+        ]},
+    ]},
+    { d:2, focus:"Glúteos y cuádriceps", exercises:[
+      { title:"Full Squats", adapted:"BL, o Smith Machine si prefieres más soporte", cue:"13+ reps limpias en el primer set = sube peso.",
+        movements:[{label:"Pendulum/Hack Squat", sets:"1×12 · 1×10 · 1×8 · 1×6", slots:4}] },
+      { title:"Hip Thrusts (tempo daño muscular)", adapted:"HT", cue:"Sube en 1 seg, baja lento en 4 seg.",
+        movements:[{label:"Hip Thrust tempo 4/0/1/0", sets:"2×12 · 1×10 · 1×8", slots:4}] },
+      { title:"Bulgarian Split Squat", adapted:"MC", cue:"12 reps una pierna, luego 12 la otra.",
+        movements:[{label:"Bulgarian Split Squat (c/pierna)", sets:"3×12", slots:1}] },
+      { title:"Superset: Leg Press (1 pierna) + caminando en squat", adapted:"PR a una pierna + caminando en squat con banda", cue:"15 reps una pierna, luego la otra, luego squat caminando.",
+        movements:[
+          {label:"Leg Press (c/pierna)", sets:"3×15", slots:1},
+          {label:"Caminando en squat", sets:"3×20 pasos", slots:1},
+        ]},
+      { title:"Hyperextension", adapted:"GP", cue:"Aprieta glúteo todo el tiempo.",
+        movements:[{label:"Hyperextension (banco) — ambas piernas", sets:"4×15", slots:1},{label:"Hyperextension (banco) — una pierna, c/lado", sets:"5×1", slots:1}] },
+    ]},
+  ]
+},
+{
+  n:9,
+  days:[
+    { d:1, focus:"Glúteos y femorales", exercises:[
+      { title:"Romanian Deadlift", adapted:"BL", cue:"Sube peso entre cada set.",
+        movements:[{label:"Romanian Deadlift", sets:"1×12 · 1×10 · 1×8 · 1×6", slots:4}] },
+      { title:"Hip Thrusts (tempo estrés metabólico)", adapted:"HT", cue:"Tempo rápido 1/0/1/0.",
+        movements:[{label:"Hip Thrust tempo 1/0/1/0", sets:"4×20", slots:1}] },
+      { title:"Superset: RDL con mancuerna pesada + Goblet Squat", adapted:"MC ambos", cue:"45 seg de descanso entre sets.",
+        movements:[
+          {label:"RDL con mancuerna pesada", sets:"3×20", slots:1},
+          {label:"Goblet Squat", sets:"3×10", slots:1},
+        ]},
+      { title:"Cable Kickback con banca", adapted:"KB — coincide directo", cue:"Usa la banca de apoyo si tu máquina lo permite.",
+        movements:[{label:"Kickback en polea (c/pierna)", sets:"3×12", slots:1}] },
+      { title:"Hip Abduction", adapted:"Hip Abduction machine + banda", cue:"Tronco inclinado hacia adelante.",
+        movements:[{label:"Hip Abduction (máquina)", sets:"4×20", slots:1}] },
+    ]},
+    { d:2, focus:"Glúteos y cuádriceps", exercises:[
+      { title:"Full Squats", adapted:"BL, o Smith Machine si prefieres más soporte", cue:"13+ reps limpias en el primer set = sube peso.",
+        movements:[{label:"Pendulum/Hack Squat", sets:"1×12 · 1×10 · 1×8 · 1×6", slots:4}] },
+      { title:"Superset: Hip Thrusts + Hip Abduction", adapted:"HT + Hip Abduction machine", cue:"40 reps de abducción rápidas después de cada Hip Thrust.",
+        movements:[
+          {label:"Hip Thrust", sets:"1×15 · 1×12 · 1×10 · 1×8", slots:4},
+          {label:"Hip Abduction (máquina)", sets:"40 reps c/set", slots:1},
+        ]},
+      { title:"Good Mornings en Smith", adapted:"Smith Machine — igual", cue:"Espalda derecha, aprieta glúteo.",
+        movements:[{label:"Good Mornings", sets:"3×15", slots:1}] },
+      { title:"Smith Machine Kick Back", adapted:"KB — coincide directo", cue:"Una pierna a la vez.",
+        movements:[{label:"Kickback en polea (c/pierna)", sets:"3×12", slots:1}] },
+      { title:"Smith Machine B-Stance Deadlift", adapted:"Smith Machine — igual", cue:"El pie de atrás solo da equilibrio.",
+        movements:[{label:"B-Stance Deadlift (c/pierna)", sets:"3×15", slots:1}] },
+    ]},
+  ]
+},
+{
+  n:10,
+  days:[
+    { d:1, focus:"Glúteos y femorales", exercises:[
+      { title:"Squat-stance Deadlift", adapted:"BL", cue:"Piernas anchas tipo squat.",
+        movements:[{label:"Squat-stance Deadlift", sets:"1×12 · 1×10 · 1×8 · 1×6", slots:4}] },
+      { title:"Superset: Hip Thrust + Hip Abduction", adapted:"HT + Hip Abduction machine", cue:"40 reps de abducción rápidas después de cada Hip Thrust.",
+        movements:[
+          {label:"Hip Thrust", sets:"1×15 · 1×12 · 1×10", slots:3},
+          {label:"Hip Abduction (máquina)", sets:"40 reps c/set", slots:1},
+        ]},
+      { title:"B-Stance Hip Thrusts", adapted:"HT a una pierna", cue:"Menos peso que el Hip Thrust normal.",
+        movements:[{label:"B-Stance Hip Thrust (c/pierna)", sets:"2×15", slots:1}] },
+      { title:"Leg Curl", adapted:"LC horizontal o sentado", cue:"Peso retador en cada rango de reps.",
+        movements:[{label:"Leg Curl", sets:"1×15 · 1×12 · 1×10 · 1×8", slots:4}] },
+      { title:"Superset: Frog Pump + Hip Abduction", adapted:"Piso/MC + Hip Abduction machine", cue:"45 seg entre sets.",
+        movements:[
+          {label:"Frog Pump c/mancuerna", sets:"3×20", slots:1},
+          {label:"Frog Pump peso corporal", sets:"3×20", slots:1},
+          {label:"Hip Abduction (máquina)", sets:"3×40", slots:1},
+        ]},
+    ]},
+    { d:2, focus:"Glúteos y cuádriceps", exercises:[
+      { title:"Full Squats", adapted:"BL, o Smith Machine si prefieres más soporte", cue:"13+ reps limpias en el primer set = sube peso.",
+        movements:[{label:"Pendulum/Hack Squat", sets:"1×12 · 1×10 · 1×8 · 1×6", slots:4}] },
+      { title:"Superset: Hip Thrusts + Reverse Hyperextension", adapted:"HT + Banco de hiperextensión", cue:"Aumenta peso de Hip Thrust entre sets.",
+        movements:[
+          {label:"Hip Thrust", sets:"1×15 · 1×12 · 1×10 · 1×8", slots:4},
+          {label:"Reverse Hyperextension (banco) + banda", sets:"10 reps c/set", slots:1},
+        ]},
+      { title:"Lunge + Step up en Smith", adapted:"Smith Machine — igual", cue:"12 reps una pierna, luego la otra.",
+        movements:[{label:"Lunge + Step-up (c/pierna)", sets:"3×12", slots:1}] },
+      { title:"Cable Hip Abduction + Sumo Squat", adapted:"Hip Abduction machine + BL/PS", cue:"Después de cada abducción, baja en squat sumo.",
+        movements:[{label:"Hip Abduction + Sumo Squat (combo, c/pierna)", sets:"3×15", slots:1}] },
+      { title:"Cable Hip Thrust", adapted:"HT", cue:"45 seg de descanso entre sets.",
+        movements:[{label:"Hip Thrust", sets:"3×30", slots:1}] },
+      { title:"Pantorrilla", adapted:"Máquina de pantorrilla", cue:"Controla la bajada.",
+        movements:[{label:"Elevación de pantorrilla", sets:"3×15", slots:1}] },
+    ]},
+  ]
+},
+{
+  n:11,
+  days:[
+    { d:1, focus:"Glúteos y femorales", exercises:[
+      { title:"Sumo Deadlift", adapted:"BL", cue:"Pies apuntando hacia afuera.",
+        movements:[{label:"Sumo Deadlift", sets:"1×12 · 1×10 · 1×8 · 1×6", slots:4}] },
+      { title:"Superset: Hip Thrusts + Hip Abduction", adapted:"HT + Hip Abduction machine", cue:"40 reps de abducción rápidas después de cada Hip Thrust.",
+        movements:[
+          {label:"Hip Thrust", sets:"1×15 · 1×12 · 1×10 · 1×8", slots:4},
+          {label:"Hip Abduction (máquina)", sets:"40 reps c/set", slots:1},
+        ]},
+      { title:"Static Lunges en Smith", adapted:"Smith Machine — igual", cue:"No llegues completamente arriba entre reps.",
+        movements:[{label:"Static Lunge (c/pierna)", sets:"3×15", slots:1}] },
+      { title:"Superset: Goblet Squats (tempo) + Glute Bridge", adapted:"MC + banda, Piso/MC + banda", cue:"Tempo 4/3/1/0 en el goblet squat.",
+        movements:[
+          {label:"Goblet Squat tempo", sets:"3×10", slots:1},
+          {label:"Glute Bridge c/mancuerna", sets:"3×15", slots:1},
+        ]},
+      { title:"Burnout: Hip Abduction Drop Set", adapted:"Hip Abduction machine (drop set)", cue:"45 seg entre sets, drop set al final.",
+        movements:[{label:"Hip Abduction drop set", sets:"4×20 + drop", slots:1}] },
+    ]},
+    { d:2, focus:"Glúteos y cuádriceps", exercises:[
+      { title:"Hip Thrusts", adapted:"HT", cue:"Hoy va primero — intenta récord de peso.",
+        movements:[{label:"Hip Thrust", sets:"1×15 · 1×12 · 1×10 · 1×8 · 1×6", slots:5}] },
+      { title:"Front Squats", adapted:"BL o Goblet pesado con MC", cue:"Espalda muy derecha, baja el peso vs. tu squat normal.",
+        movements:[{label:"Front Squat / Goblet pesado", sets:"4×10", slots:1}] },
+      { title:"Zercher Squat con pulso en Smith", adapted:"BL (Zercher), o Smith Machine con pulso", cue:"Baja lo más que puedas y haz un pulso ahí.",
+        movements:[{label:"Zercher Squat / Hack Squat con pulso", sets:"3×15", slots:1}] },
+      { title:"Curtsey Lunge + Sumo Squat en Smith", adapted:"Smith Machine — igual", cue:"Curtsey izquierda, sumo squat con pulso, curtsey derecha, sumo squat con pulso — 1 rep.",
+        movements:[{label:"Curtsey + Sumo Squat (combo)", sets:"3×15", slots:1}] },
+      { title:"Superset: Hyperextension + Hip Abduction", adapted:"Banco de hiperextensión + Hip Abduction machine", cue:"Disco extra en el banco si quieres más dificultad.",
+        movements:[
+          {label:"Hyperextension (banco)", sets:"4×15", slots:1},
+          {label:"Hip Abduction (máquina)", sets:"4×30", slots:1},
+        ]},
+    ]},
+  ]
+},
+{
+  n:12,
+  days:[
+    { d:1, focus:"Glúteos y femorales", exercises:[
+      { title:"Romanian Deadlift", adapted:"BL", cue:"Sube peso entre cada set.",
+        movements:[{label:"Romanian Deadlift", sets:"1×12 · 1×10 · 1×8 · 1×6", slots:4}] },
+      { title:"Superset: Hip Thrusts + Reverse Hyperextension", adapted:"HT + Banco de hiperextensión", cue:"Aumenta peso de Hip Thrust entre sets.",
+        movements:[
+          {label:"Hip Thrust", sets:"1×15 · 1×12 · 1×10 · 1×8", slots:4},
+          {label:"Reverse Hyperextension (banco) + banda", sets:"10 reps c/set", slots:1},
+        ]},
+      { title:"Cable Kick Back", adapted:"KB — coincide directo", cue:"—",
+        movements:[{label:"Kickback en polea (c/pierna)", sets:"3×12", slots:1}] },
+      { title:"Leg Curl", adapted:"LC horizontal o sentado", cue:"Peso retador para 20 reps.",
+        movements:[{label:"Leg Curl", sets:"3×20", slots:1}] },
+      { title:"Superset: RDL con mancuerna + Glute Bridges + Hip Thrusts 1 pierna", adapted:"MC + Piso/MC + HT", cue:"Mancuerna pesada en los primeros dos, luego 10 reps c/pierna en el último.",
+        movements:[
+          {label:"RDL con mancuerna", sets:"3×10", slots:1},
+          {label:"Glute Bridge c/mancuerna", sets:"3×20", slots:1},
+          {label:"Hip Thrust 1 pierna (c/pierna)", sets:"3×10", slots:1},
+        ]},
+    ]},
+    { d:2, focus:"Glúteos y cuádriceps", exercises:[
+      { title:"Full Squats", adapted:"BL, o Smith Machine si prefieres más soporte", cue:"13+ reps limpias en el primer set = sube peso.",
+        movements:[{label:"Pendulum/Hack Squat", sets:"1×12 · 1×10 · 1×8 · 1×6", slots:4}] },
+      { title:"Superset: Hip Thrusts + Hip Abduction", adapted:"HT + Hip Abduction machine", cue:"40 reps de abducción rápidas después de cada Hip Thrust.",
+        movements:[
+          {label:"Hip Thrust", sets:"1×15 · 1×12 · 1×10 · 1×8", slots:4},
+          {label:"Hip Abduction (máquina)", sets:"40 reps c/set", slots:1},
+        ]},
+      { title:"Bulgarian Split Squats con pulso en Smith", adapted:"Smith Machine — igual", cue:"Pequeño pulso abajo antes de subir.",
+        movements:[{label:"Bulgarian Split Squat con pulso (c/pierna)", sets:"3×12", slots:1}] },
+      { title:"Sumo Deadlift en Smith", adapted:"Smith Machine — igual", cue:"No llegues completamente arriba entre reps.",
+        movements:[{label:"Sumo Deadlift", sets:"3×20", slots:1}] },
+      { title:"Leg Extension", adapted:"LE", cue:"—",
+        movements:[{label:"Leg Extension", sets:"3×20", slots:1}] },
+    ]},
+  ]
+},
+];
+
+</script>
+<script>
+(function(){
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // ================= PASSWORD GATE =================
+  const gate = document.getElementById('gate');
+  const app = document.getElementById('app');
+  const gatePw = document.getElementById('gatePw');
+  const gateBtn = document.getElementById('gateBtn');
+  const gateError = document.getElementById('gateError');
+
+  function tryLogin(){
+    if(gatePw.value === APP_PASSWORD){
+      try{ sessionStorage.setItem('glute-guide-authed', '1'); }catch(e){}
+      gate.classList.add('hidden');
+      app.classList.add('visible');
+      boot();
+    } else {
+      gateError.textContent = 'Contraseña incorrecta.';
+      gatePw.value = '';
+      gatePw.focus();
+    }
+  }
+  gateBtn.addEventListener('click', tryLogin);
+  gatePw.addEventListener('keydown', e=>{ if(e.key==='Enter') tryLogin(); });
+
+  document.getElementById('logoutBtn').addEventListener('click', ()=>{
+    try{ sessionStorage.removeItem('glute-guide-authed'); }catch(e){}
+    location.reload();
+  });
+
+  let alreadyAuthed = false;
+  try{ alreadyAuthed = sessionStorage.getItem('glute-guide-authed') === '1'; }catch(e){}
+  if(alreadyAuthed){
+    gate.classList.add('hidden');
+    app.classList.add('visible');
+    boot();
+  }
+
+  // ================= TABS =================
+  document.getElementById('tabs').addEventListener('click', e=>{
+    const btn = e.target.closest('button[data-tab]');
+    if(!btn) return;
+    document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('active', b===btn));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+    if(btn.dataset.tab === 'progreso') renderProgressTab();
+    if(btn.dataset.tab === 'medidas') renderMedidasTab();
+  });
+
+  // ================= SYNC STATUS =================
+  const syncStatus = document.getElementById('syncStatus');
+  function setSync(msg, isErr){
+    syncStatus.textContent = msg;
+    syncStatus.classList.toggle('err', !!isErr);
+  }
+
+  // ================= STATE =================
+  let setsData = [];      // rows from logged_sets
+  let setsByKey = {};      // "w-d-e-m-s" -> row
+  let metricsData = [];     // rows from body_metrics, sorted asc by date
+
+  function slotKey(w,d,ei,mi,si){ return `${w}-${d}-${ei}-${mi}-${si}`; }
+
+  async function loadSets(){
+    const { data, error } = await supabase.from('logged_sets').select('*');
+    if(error){ setSync('Error cargando datos: ' + error.message, true); return; }
+    setsData = data || [];
+    setsByKey = {};
+    setsData.forEach(r=>{
+      setsByKey[slotKey(r.week,r.day,r.exercise_index,r.movement_index,r.slot_index)] = r;
+    });
+  }
+
+  async function loadMetrics(){
+    const { data, error } = await supabase.from('body_metrics').select('*').order('log_date', { ascending: true });
+    if(error){ setSync('Error cargando medidas: ' + error.message, true); return; }
+    metricsData = data || [];
+  }
+
+  async function saveSetValue(w,d,ei,mi,si,label,rawValue){
+    const key = slotKey(w,d,ei,mi,si);
+    const trimmed = (rawValue||'').trim();
+    if(trimmed === ''){
+      const existing = setsByKey[key];
+      if(existing){
+        await supabase.from('logged_sets').delete().eq('id', existing.id);
+        delete setsByKey[key];
+        setsData = setsData.filter(r=>r.id !== existing.id);
+      }
+      return true;
+    }
+    const num = parseFloat(trimmed.replace(',', '.'));
+    if(isNaN(num)){
+      setSync('Ese valor no se pudo guardar (no es un número).', true);
+      return false;
+    }
+    const { data, error } = await supabase.from('logged_sets')
+      .upsert({
+        week:w, day:d, exercise_index:ei, movement_index:mi, slot_index:si,
+        movement_label:label, value:num, updated_at: new Date().toISOString()
+      }, { onConflict: 'week,day,exercise_index,movement_index,slot_index' })
+      .select()
+      .single();
+    if(error){ setSync('Error guardando: ' + error.message, true); return false; }
+    setsByKey[key] = data;
+    setsData = setsData.filter(r=>r.id !== data.id);
+    setsData.push(data);
+    return true;
+  }
+
+  // ================= RUTINA TAB =================
+  document.getElementById('subsIntro').textContent = SUBS.intro;
+  const subsList = document.getElementById('subsList');
+  SUBS.items.forEach(it=>{
+    const li = document.createElement('li');
+    li.innerHTML = `<b>${it.from}</b><span class="arrow">→</span>${it.to}`;
+    subsList.appendChild(li);
+  });
+  document.getElementById('legendText').textContent = LEGEND;
+
+  document.getElementById('actTitle').textContent = ACTIVATION.title;
+  document.getElementById('actSub').textContent = ACTIVATION.subtitle;
+  document.getElementById('actIntro').textContent = ACTIVATION.intro;
+  document.getElementById('actOutro').textContent = ACTIVATION.outro;
+  const actSteps = document.getElementById('actSteps');
+  ACTIVATION.steps.forEach(s=>{
+    const li = document.createElement('li');
+    li.innerHTML = `<b>${s.name}</b> — <span class="reps">${s.reps}</span><br>${s.note}`;
+    actSteps.appendChild(li);
+  });
+
+  const weekNav = document.getElementById('weekNav');
+  const weekContent = document.getElementById('weekContent');
+  let currentWeek = 1;
+
+  WEEKS.forEach(w=>{
+    const b = document.createElement('button');
+    b.textContent = w.n;
+    b.dataset.week = w.n;
+    b.onclick = ()=> setWeek(w.n);
+    weekNav.appendChild(b);
+  });
+
+  function setWeek(n){
+    currentWeek = n;
+    [...weekNav.children].forEach(b=> b.classList.toggle('active', +b.dataset.week === n));
+    renderWeek(n);
+  }
+
+  function prMaxForLabel(label){
+    let max = -Infinity;
+    setsData.forEach(r=>{ if(r.movement_label === label && r.value > max) max = r.value; });
+    return max === -Infinity ? null : max;
+  }
+
+  function renderMovement(w,d,ei,mv,mi){
+    const div = document.createElement('div');
+    div.className = 'mv';
+    let slotsHtml = '';
+    const best = prMaxForLabel(mv.label);
+    for(let si=0; si<mv.slots; si++){
+      const key = slotKey(w,d,ei,mi,si);
+      const row = setsByKey[key];
+      const labelText = mv.slots===1 ? 'kg/lb' : `set ${si+1}`;
+      const val = row ? row.value : '';
+      const isPr = row && best !== null && row.value === best;
+      slotsHtml += `<div class="slot"><label>${labelText}</label><input type="text" inputmode="decimal" placeholder="—" class="${isPr?'is-pr':''}" value="${val}" data-w="${w}" data-d="${d}" data-ei="${ei}" data-mi="${mi}" data-si="${si}" data-label="${mv.label.replace(/"/g,'&quot;')}"></div>`;
+    }
+    div.innerHTML = `
+      <div class="mv-label">${mv.label}${best!==null?` <span class="pr-flag">mejor: ${best}</span>`:''}</div>
+      <div class="mv-sets">${mv.sets}</div>
+      <div class="slots">${slotsHtml}</div>
+    `;
+    return div;
+  }
+
+  function renderWeek(n){
+    weekContent.innerHTML = '';
+    const w = WEEKS.find(x=>x.n===n);
+    const head = document.createElement('div');
+    head.className = 'week-head';
+    head.innerHTML = `<h2>Semana ${w.n}</h2><span class="prog">de 12</span>`;
+    weekContent.appendChild(head);
+
+    w.days.forEach(day=>{
+      const dayDiv = document.createElement('div');
+      dayDiv.className = 'day';
+      const dh = document.createElement('div');
+      dh.className = 'day-head';
+      dh.innerHTML = `<h3>Día ${day.d}</h3><span class="focus">${day.focus}</span>`;
+      dayDiv.appendChild(dh);
+
+      day.exercises.forEach((ex, ei)=>{
+        const exDiv = document.createElement('div');
+        exDiv.className = 'ex';
+        exDiv.innerHTML = `
+          <div class="ex-head">
+            <span class="ex-title">${ex.title}</span>
+            <span class="badge">${ex.adapted}</span>
+          </div>
+          <p class="cue">${ex.cue}</p>
+        `;
+        ex.movements.forEach((mv,mi)=>{
+          exDiv.appendChild(renderMovement(w.n, day.d, ei, mv, mi));
+        });
+        dayDiv.appendChild(exDiv);
+      });
+
+      weekContent.appendChild(dayDiv);
+    });
+
+    weekContent.querySelectorAll('input[data-w]').forEach(inp=>{
+      inp.addEventListener('change', async ()=>{
+        setSync('Guardando…');
+        const ok = await saveSetValue(
+          +inp.dataset.w, +inp.dataset.d, +inp.dataset.ei, +inp.dataset.mi, +inp.dataset.si,
+          inp.dataset.label, inp.value
+        );
+        setSync(ok ? 'Guardado ✓' : syncStatus.textContent, !ok);
+        if(ok) setTimeout(()=> setSync(''), 1500);
+        renderWeek(currentWeek); // refresh PR badges
+      });
+    });
+  }
+
+  // ================= PROGRESO TAB =================
+  const progressSelect = document.getElementById('progressSelect');
+  let progressChart = null;
+  let progressPopulated = false;
+
+  function allMovementLabels(){
+    const seen = new Set();
+    const labels = [];
+    WEEKS.forEach(w=> w.days.forEach(d=> d.exercises.forEach(ex=> ex.movements.forEach(mv=>{
+      if(!seen.has(mv.label)){ seen.add(mv.label); labels.push(mv.label); }
+    }))));
+    return labels;
+  }
+
+  function populateProgressSelect(){
+    if(progressPopulated) return;
+    allMovementLabels().forEach(label=>{
+      const opt = document.createElement('option');
+      opt.value = label; opt.textContent = label;
+      progressSelect.appendChild(opt);
+    });
+    progressPopulated = true;
+    progressSelect.addEventListener('change', renderProgressChart);
+  }
+
+  function renderPrList(){
+    const prList = document.getElementById('prList');
+    const prEmpty = document.getElementById('prEmpty');
+    prList.innerHTML = '';
+    const labels = allMovementLabels();
+    let any = false;
+    labels.forEach(label=>{
+      const rowsForLabel = setsData.filter(r=>r.movement_label===label);
+      if(rowsForLabel.length === 0) return;
+      any = true;
+      const best = rowsForLabel.reduce((a,b)=> b.value > a.value ? b : a);
+      const li = document.createElement('li');
+      li.innerHTML = `<span>${label}</span><span class="pr-val">${best.value} <span class="pr-meta">(Sem ${best.week}, Día ${best.day})</span></span>`;
+      prList.appendChild(li);
+    });
+    prEmpty.style.display = any ? 'none' : 'block';
+  }
+
+  function renderProgressChart(){
+    const label = progressSelect.value;
+    const canvas = document.getElementById('progressChart');
+    const empty = document.getElementById('progressEmpty');
+    const perWeek = [];
+    for(let w=1; w<=12; w++){
+      const rows = setsData.filter(r=> r.movement_label===label && r.week===w);
+      perWeek.push(rows.length ? Math.max(...rows.map(r=>r.value)) : null);
+    }
+    const hasData = perWeek.some(v=>v!==null);
+    empty.style.display = hasData ? 'none' : 'block';
+    canvas.style.display = hasData ? 'block' : 'none';
+    if(progressChart) progressChart.destroy();
+    if(!hasData) return;
+    progressChart = new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: perWeek.map((_,i)=>'S'+(i+1)),
+        datasets: [{
+          label: label,
+          data: perWeek,
+          spanGaps: true,
+          borderColor: '#ff3d68',
+          backgroundColor: 'rgba(255,61,104,0.15)',
+          tension: 0.25,
+          pointBackgroundColor: '#e7a53d',
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { color: '#a89890' }, grid: { color: '#352b29' } },
+          y: { ticks: { color: '#a89890' }, grid: { color: '#352b29' } },
+        }
+      }
+    });
+  }
+
+  function renderProgressTab(){
+    populateProgressSelect();
+    renderPrList();
+    renderProgressChart();
+  }
+
+  // ================= MEDIDAS TAB =================
+  let weightChart = null;
+
+  document.getElementById('mSaveBtn').addEventListener('click', async ()=>{
+    const dateVal = document.getElementById('mDate').value || new Date().toISOString().slice(0,10);
+    const parse = v => { const t=(v||'').trim(); if(t==='') return null; const n=parseFloat(t.replace(',','.')); return isNaN(n)?null:n; };
+    const payload = {
+      log_date: dateVal,
+      weight: parse(document.getElementById('mWeight').value),
+      waist: parse(document.getElementById('mWaist').value),
+      hip: parse(document.getElementById('mHip').value),
+      thigh: parse(document.getElementById('mThigh').value),
+    };
+    setSync('Guardando…');
+    const { error } = await supabase.from('body_metrics').upsert(payload, { onConflict: 'log_date' });
+    if(error){ setSync('Error: ' + error.message, true); return; }
+    setSync('Guardado ✓'); setTimeout(()=> setSync(''), 1500);
+    ['mWeight','mWaist','mHip','mThigh'].forEach(id=> document.getElementById(id).value = '');
+    await loadMetrics();
+    renderMedidasTab();
+  });
+
+  function renderMetricsTable(){
+    const tbody = document.getElementById('metricsTbody');
+    const empty = document.getElementById('metricsEmpty');
+    tbody.innerHTML = '';
+    const rows = [...metricsData].sort((a,b)=> b.log_date.localeCompare(a.log_date));
+    rows.forEach(r=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${r.log_date}</td><td>${r.weight ?? '—'}</td><td>${r.waist ?? '—'}</td><td>${r.hip ?? '—'}</td><td>${r.thigh ?? '—'}</td>`;
+      tbody.appendChild(tr);
+    });
+    empty.style.display = rows.length ? 'none' : 'block';
+    document.getElementById('metricsTable').style.display = rows.length ? 'table' : 'none';
+  }
+
+  function renderWeightChart(){
+    const canvas = document.getElementById('weightChart');
+    const empty = document.getElementById('weightEmpty');
+    const points = metricsData.filter(r=> r.weight !== null);
+    empty.style.display = points.length ? 'none' : 'block';
+    canvas.style.display = points.length ? 'block' : 'none';
+    if(weightChart) weightChart.destroy();
+    if(!points.length) return;
+    weightChart = new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: points.map(p=>p.log_date),
+        datasets: [{
+          label: 'Peso',
+          data: points.map(p=>p.weight),
+          borderColor: '#5fae7a',
+          backgroundColor: 'rgba(95,174,122,0.15)',
+          tension: 0.25,
+          pointBackgroundColor: '#e7a53d',
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { color: '#a89890' }, grid: { color: '#352b29' } },
+          y: { ticks: { color: '#a89890' }, grid: { color: '#352b29' } },
+        }
+      }
+    });
+  }
+
+  function renderMedidasTab(){
+    renderMetricsTable();
+    renderWeightChart();
+  }
+
+  // ================= BOOT =================
+  let booted = false;
+  async function boot(){
+    if(booted) return;
+    booted = true;
+    document.getElementById('mDate').value = new Date().toISOString().slice(0,10);
+    setSync('Cargando…');
+    await Promise.all([loadSets(), loadMetrics()]);
+    setSync('');
+    setWeek(1);
+  }
+})();
+</script>
+
+</body>
+</html>

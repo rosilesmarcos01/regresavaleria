@@ -2,3 +2,6 @@ node_modules
 dist
 public/archive
 .DS_Store
+fitness-tracker/config.js
+.vercel
+.env*

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "rm -rf dist && mkdir -p dist && cp -R VMS/. dist/"
+    "build": "node build.js",
+    "dev": "npx serve fitness-tracker"
   }
 }
